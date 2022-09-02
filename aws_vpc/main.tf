@@ -5,7 +5,7 @@ resource "aws_vpc" "vpc" {
   tags = {
     Name                = "${var.customer_prefix}-${var.environment}-${var.vpc_name}-vpc"
     Environment         = var.environment
-    "var.vpc_tag_name"  = var.vpc_tag_value
+    var.vpc_tag_name    = var.vpc_tag_value
   }
 }
 

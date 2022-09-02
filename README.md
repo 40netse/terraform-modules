@@ -1,2 +1,2 @@
 # terraform-modules
-Repository for cloud terraform resources
+Repository for cloud terraform modules used for public cloud resources. 
