@@ -1,8 +1,4 @@
 
-variable "aws_region" {
-  description = "The AWS region to use"
-}
-
 variable "subnet_name" {
   description = "Subnet Name to apply to the name TAG"
 }
