@@ -15,10 +15,6 @@ variable "subnet_cidr" {
     description = "CIDR for the subnet"
 }
 
-variable "subnet_description" {
-    description = "Description for the subnet tag"
-}
-
 variable "public_route" {
   description = "Boolean to associate this subnet with Public Route Table"
   default     = 0
