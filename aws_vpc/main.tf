@@ -1,6 +1,6 @@
 
 locals {
-    id_tag = tomap(var.vpc_tag_key, var.vpc_tag_value)
+    id_tag = tomap({var.vpc_tag_key = var.vpc_tag_value})
 }
 
 resource "aws_vpc" "vpc" {
