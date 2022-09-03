@@ -6,7 +6,7 @@ locals {
 resource "aws_vpc" "vpc" {
   cidr_block            = var.vpc_cidr
   enable_dns_hostnames  = true
-  tags = merge(tomap({Name = (var.customer_prefix)-(var.environment)-(var.vpc_name)-vpc}),
+  tags = merge(tomap({Name = (var.customer_prefix)-(var.environment)-(var.vpc_name)}),
             tomap({Environment = (var.environment)}),
             local.id_tag)
 }
