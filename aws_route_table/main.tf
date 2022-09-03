@@ -2,8 +2,7 @@
 resource "aws_route_table" "route_table" {
   vpc_id            = var.vpc_id
   tags = {
-        Name        = "${var.customer_prefix}-${var.environment}-${var.route_description}"
-        Environment = var.environment
+        Name        = var.rt_name
   }
 
 }

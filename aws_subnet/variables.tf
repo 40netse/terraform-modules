@@ -3,12 +3,8 @@ variable "aws_region" {
   description = "The AWS region to use"
 }
 
-variable "customer_prefix" {
-  description = "Customer Prefix to apply to all resources"
-}
-
-variable "environment" {
-  description = "The Tag Environment in the S3 tag"
+variable "subnet_name" {
+  description = "Subnet Name to apply to the name TAG"
 }
 
 variable "vpc_id" {

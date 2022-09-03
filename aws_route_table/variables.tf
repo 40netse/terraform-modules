@@ -1,17 +1,4 @@
 
-variable "aws_region" {
-  description = "The AWS region to use"
-}
-
-variable "customer_prefix" {
-  description = "Customer Prefix to apply to all resources"
-}
-
-variable "environment" {
-  description = "The Tag Environment in the S3 tag"
-  default = "stage"
-}
-
 variable "vpc_id" {
   description = "Route Table VPC ID"
 }
@@ -46,6 +33,6 @@ variable "tgw_id" {
   default     = null
 }
 
-variable "route_description" {
-  description = "Route Description for Tag"
+variable "rt_name" {
+  description = "Route Description for name Tag"
 }
