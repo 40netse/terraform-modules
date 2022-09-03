@@ -18,6 +18,10 @@ variable "aws_region" {
 variable "vpc_cidr" {
     description = "CIDR for the whole VPC"
 }
+variable "vpc_tag_vkey" {
+    description = "Random Tag Key to place on VPC for data ID"
+    default     = ""
+}
 variable "vpc_tag_value" {
     description = "Random Tag Value to place on VPC for data ID"
     default     = ""
