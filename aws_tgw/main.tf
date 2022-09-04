@@ -1,9 +1,7 @@
 
 resource "aws_ec2_transit_gateway" "tgw" {
-  description = "${var.customer_prefix}-${var.environment}-tgw for east-west inspection"
   tags = {
-    Name        = "${var.customer_prefix}-${var.environment}-tgw"
-    Environment = var.environment
+    Name        = var.tgw_name
   }
   amazon_side_asn                 = var.bgp_asn
   auto_accept_shared_attachments  = var.auto_accept_shared_attachments

@@ -1,8 +1,7 @@
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-attach" {
   tags = {
-    Name        = "${var.customer_prefix}-${var.environment}-${var.vpc_name}-tgw-attach"
-    Environment = var.environment
+    Name        = var.tgw_attachment_name
   }
   transit_gateway_id                              = var.transit_gateway_id
   vpc_id                                          = var.vpc_id

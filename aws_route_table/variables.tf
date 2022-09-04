@@ -1,4 +1,6 @@
-
+variable "rt_name" {
+  description = "Route Description for name Tag"
+}
 variable "vpc_id" {
   description = "Route Table VPC ID"
 }
@@ -31,8 +33,4 @@ variable "igw_id" {
 variable "tgw_id" {
   description = "Transit Gateway to use for the TGW Route"
   default     = null
-}
-
-variable "rt_name" {
-  description = "Route Description for name Tag"
 }

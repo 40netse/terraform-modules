@@ -8,7 +8,7 @@ resource "random_string" "random" {
 }
 
 resource "aws_iam_role" "fortigate_role" {
-  name = "fortigate_role-${var.customer_prefix}-${var.environment}-${random_string.random.result}"
+  name = "fortigate_role-${var.iam_role_name}-${random_string.random.result}"
 
   assume_role_policy = <<EOF
 {
@@ -26,17 +26,17 @@ resource "aws_iam_role" "fortigate_role" {
 }
 EOF
   tags = {
-    Name = "${var.customer_prefix}-${var.environment}-iam-role"
+    Name = "fortigate_role-${var.iam_role_name}-${random_string.random.result}"cccccbcbu
   }
 }
 
 resource "aws_iam_instance_profile" "fortigate_profile" {
-  name = "fortigate_profile-${var.customer_prefix}-${var.environment}-${random_string.random.result}"
+  name = "fortigate_profile-${var.iam_role_name}-${random_string.random.result}"
   role = aws_iam_role.fortigate_role.name
 }
 
 resource "aws_iam_role_policy" "fortigate_policy" {
-  name = "fortigate_policy-${var.customer_prefix}-${var.environment}-${random_string.random.result}"
+  name = "fortigate_policy-${var.iam_role_name}-${random_string.random.result}"
   role = aws_iam_role.fortigate_role.id
 
   policy = <<EOF
