@@ -1,14 +1,5 @@
-
-variable "aws_region" {
-  description = "The AWS region to use"
-  default = "us-west-2"
-}
-variable "environment" {
-  description = "The Tag Environment in the S3 tag"
-  default = "stage"
-}
-variable "customer_prefix" {
-  description = "Customer Prefix to apply to all resources"
+variable "aws_ec2_instance_name" {
+  description = "EC2 instance name used for taggging"
 }
 variable "aws_ami" {
   description = "The AMI ID for the On-Demand image"

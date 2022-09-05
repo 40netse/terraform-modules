@@ -5,8 +5,7 @@ resource "aws_eip" "EIP" {
   network_interface     = aws_instance.ec2.primary_network_interface_id
   depends_on            = [ aws_instance.ec2 ]
   tags = {
-    Name            = "${var.customer_prefix}-${var.environment}-${var.instance_name}"
-    Environment     = var.environment
+    Name            = "${var.aws_ec2_instance_name}-public-eip"
   }
 }
 
@@ -16,8 +15,7 @@ resource "aws_eip" "HA_EIP" {
   network_interface     = aws_network_interface.ha_eni[count.index].id
   depends_on            = [ aws_network_interface.ha_eni ]
   tags = {
-    Name            = "${var.customer_prefix}-${var.environment}-${var.instance_name}"
-    Environment     = var.environment
+    Name            = "${var.aws_ec2_instance_name}-mgmt-eip"
   }
 }
 
@@ -34,7 +32,7 @@ resource "aws_network_interface" "sync_eni" {
   }
 
   tags = {
-    Name = "${var.customer_prefix}-${var.environment}-${var.instance_name}-ENI_Sync"
+    Name = "${var.aws_ec2_instance_name}-ENI_sync"
   }
 }
 
@@ -50,7 +48,7 @@ resource "aws_network_interface" "ha_eni" {
     device_index              = 3
   }
   tags = {
-    Name = "${var.customer_prefix}-${var.environment}-${var.instance_name}-ENI_hamgmt"
+    Name = "${var.aws_ec2_instance_name}-ENI_mgmt"
   }
 }
 
@@ -66,7 +64,7 @@ resource "aws_network_interface" "private_eni" {
     device_index              = 1
   }
   tags = {
-    Name = "${var.customer_prefix}-${var.environment}-${var.instance_name}-ENI_Private"
+    Name = "${var.aws_ec2_instance_name}-ENI_private"
   }
 }
 
@@ -81,8 +79,7 @@ resource "aws_instance" "ec2" {
   private_ip                  = var.public_ip_address
   security_groups             = [ var.security_group_public_id ]
   tags = {
-    Name            = "${var.customer_prefix}-${var.environment}-${var.instance_name}"
-    Environment     = var.environment
+    Name            = var.aws_ec2_instance_name
   }
 }
 
