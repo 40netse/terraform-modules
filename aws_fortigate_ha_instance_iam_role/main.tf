@@ -26,7 +26,7 @@ resource "aws_iam_role" "fortigate_role" {
 }
 EOF
   tags = {
-    Name = "fortigate_role-${var.iam_role_name}-${random_string.random.result}"cccccbcbu
+    Name = "fortigate_role-${var.iam_role_name}-${random_string.random.result}"
   }
 }
 
