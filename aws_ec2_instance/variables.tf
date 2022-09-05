@@ -29,9 +29,6 @@ variable "api_termination_protection" {
   description = "If true, enables EC2 Instance Termination Protection"
   default     = false
 }
-variable "instance_name" {
-  description = "Instance name"
-}
 variable "public_subnet_id" {
   description = "Public Subnet ID"
   default = ""
