@@ -1,12 +1,9 @@
 
-variable "aws_region" {
-  description = "Provide the region to use"
-}
 variable "vpc_id" {
   description = "Provide the VPC ID for the instance"
 }
-variable "name" {
-  description = "Security Group Name suffix"
+variable "sg_name" {
+  description = "Security Group Name for TAGS"
 }
 variable "ingress_from_port" {
   description = "Ingress from port for security group"
@@ -25,12 +22,6 @@ variable "egress_to_port" {
 }
 variable "egress_protocol" {
   description = "Egress protocol for security group"
-}
-variable "customer_prefix" {
-  description = "Customer Prefix to apply to all resources"
-}
-variable "environment" {
-  description = "The Tag Environment in the S3 tag"
 }
 variable "ingress_cidr_for_access" {
   description = "CIDR to use for security group access"

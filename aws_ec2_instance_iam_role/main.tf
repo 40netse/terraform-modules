@@ -5,7 +5,7 @@ resource "random_string" "random" {
 }
 
 resource "aws_iam_role" "linux_role" {
-  name = "${var.customer_prefix}-${var.environment}-${random_string.random.result}-instance_role"
+  name = var.iam_role_name
 
   assume_role_policy = <<EOF
 {
@@ -23,7 +23,7 @@ resource "aws_iam_role" "linux_role" {
 }
 EOF
   tags = {
-    Name = "${var.customer_prefix}-${var.environment}-instance-iam-role"
+    Name = var.iam_role_name
   }
 }
 
