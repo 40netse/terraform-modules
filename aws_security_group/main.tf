@@ -15,7 +15,10 @@ resource "aws_security_group" "sg" {
     protocol    = var.egress_protocol
     cidr_blocks = [ var.egress_cidr_for_access]
   }
-  tags = {
-	Name = var.sg_name
-  }
+  #
+  # https://github.com/hashicorp/terraform-provider-aws/issues/19583
+  #
+  # tags = {
+  #	 Name = var.sg_name
+  # }
 }

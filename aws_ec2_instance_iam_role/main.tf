@@ -22,9 +22,12 @@ resource "aws_iam_role" "linux_role" {
   ]
 }
 EOF
-  tags = {
-    Name = var.iam_role_name
-  }
+  #
+  # https://github.com/hashicorp/terraform-provider-aws/issues/19583
+  #
+  # tags = {
+  #	 Name = var.iam_role_name
+  # }
 }
 
 resource "aws_iam_instance_profile" "linux_profile" {
