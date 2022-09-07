@@ -4,8 +4,11 @@ variable "tgw_attachment_name" {
 variable "transit_gateway_id" {
   description = "Transit Gateway ID used for this attachment"
 }
-variable "subnet_ids" {
-  description = "Subnet IDs of subnets used to route traffic from the TGW into the VPC"
+variable "subnet1" {
+  description = "Subnet IDs of subnet1 used to route traffic from the TGW into the VPC"
+}
+variable "subnet2" {
+  description = "Subnet IDs of subnet2 used to route traffic from the TGW into the VPC"
 }
 variable "dns_support" {
   description = "Whether DNS support is enable"
