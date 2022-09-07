@@ -46,7 +46,7 @@ data "aws_network_interfaces" "gwlb_eni_az1" {
   }
   filter {
     name   = "subnet-id"
-    values = [var.subnet-az1]
+    values = [var.subnet_az1]
   }
 }
 
@@ -57,7 +57,7 @@ data "aws_network_interfaces" "gwlb_eni_az2" {
   }
   filter {
     name   = "subnet-id"
-    values = [var.subnet-az2]
+    values = [var.subnet_az2]
   }
 }
 

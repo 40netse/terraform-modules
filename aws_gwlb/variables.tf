@@ -2,10 +2,10 @@
 variable "name" {
   description = "IGW Name to apply to the name TAG"
 }
-variable "subnet-az1" {
+variable "subnet_az1" {
   description = "Subnet in AZ1 for Gateway Load Balancer connection"
 }
-variable "subnet-az2" {
+variable "subnet_az2" {
   description = "Subnet in AZ2 for Gateway Load Balancer connection"
 }
 variable "enable_cross_az_lb" {
