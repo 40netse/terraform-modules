@@ -23,3 +23,9 @@ output "gwlb_endpoint_service_type" {
   value = aws_vpc_endpoint_service.endpoint_service.service_type
 }
 
+output "gwlb_eni_id_az1" {
+  value = local.gwlb_eni_id_az1
+}
+output "gwlb_eni_id_az2" {
+  value = local.gwlb_eni_id_az2
+}
