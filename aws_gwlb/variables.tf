@@ -13,7 +13,7 @@ variable "enable_cross_az_lb" {
   type = bool
 }
 variable "vpc_id" {
-    description = "VPC ID for "
+    description = "VPC ID for target group"
 }
 variable "elb_listener_port" {
   description = "Listener port for health check"

@@ -2,7 +2,7 @@
 resource "aws_lb" "gwlb" {
   name                             = "${var.name}-gwlb"
   load_balancer_type               = "gateway"
-  subnets                          = [ subnet-az1, subnet-az2 ]
+  subnets                          = [ var.subnet_az1, var.subnet_az2 ]
   enable_cross_zone_load_balancing = var.enable_cross_az_lb
 }
 
