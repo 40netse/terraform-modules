@@ -75,12 +75,6 @@ data "aws_network_interface" "gwlb_ip2" {
   id = element(local.gwlb_eni_id_az2, 0)
 }
 
-
-resource "aws_vpc_endpoint_service" "gwlb_endpoint_service" {
-  acceptance_required        = false
-  gateway_load_balancer_arns = [aws_lb.gwlb.arn]
-}
-
 resource "aws_lb_target_group_attachment" "gwlb_target_group_attachment1" {
   target_group_arn = aws_lb_target_group.gwlb_target_group.arn
   target_id = var.instance1_id
