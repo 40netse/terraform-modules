@@ -84,3 +84,22 @@ resource "aws_lb_target_group_attachment" "gwlb_target_group_attachment2" {
   target_group_arn = aws_lb_target_group.gwlb_target_group.arn
   target_id = var.instance2_id
 }
+resource "aws_vpc_endpoint" "gwlb_endpoint_az1" {
+  service_name      = aws_vpc_endpoint_service.endpoint_service.service_name
+  subnet_ids        = [var.subnet_az1]
+  vpc_endpoint_type = aws_vpc_endpoint_service.endpoint_service.service_type
+  vpc_id            = var.vpc_id
+  tags = {
+    Name = "${var.name}-gwlbe-az1"
+  }
+}
+
+resource "aws_vpc_endpoint" "gwlb_endpoint_az2" {
+  service_name      = aws_vpc_endpoint_service.endpoint_service.service_name
+  subnet_ids        = [var.subnet_az2]
+  vpc_endpoint_type = aws_vpc_endpoint_service.endpoint_service.service_type
+  vpc_id            = var.vpc_id
+  tags = {
+    Name = "${var.name}-gwlbe-az2"
+  }
+}

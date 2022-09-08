@@ -23,6 +23,16 @@ output "gwlb_endpoint_service_type" {
   value = aws_vpc_endpoint_service.endpoint_service.service_type
 }
 
+output "gwlb_endpoint_az1" {
+  description = "Gateway Load Balancer Endpoint in AZ1"
+  value = aws_vpc_endpoint.gwlb_endpoint_az1.id
+}
+
+output "gwlb_endpoint_az2" {
+  description = "Gateway Load Balancer Endpoint in AZ2"
+  value = aws_vpc_endpoint.gwlb_endpoint_az2.id
+}
+
 output "gwlb_eni_id_az1" {
   value = local.gwlb_eni_id_az1
 }
