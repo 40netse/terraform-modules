@@ -24,5 +24,5 @@ variable "transit_gateway_default_route_table_propogation" {
 }
 variable "appliance_mode_support" {
   description = "Turn on appliance mode support for this attachment"
-  default = "false"
+  default = "disable"
 }
