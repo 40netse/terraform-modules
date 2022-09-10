@@ -9,4 +9,5 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-attach" {
   transit_gateway_default_route_table_association = var.transit_gateway_default_route_table_association
   transit_gateway_default_route_table_propagation = var.transit_gateway_default_route_table_propogation
   dns_support                                     = var.dns_support
+  appliance_mode_support                          = var.appliance_mode_support
 }
