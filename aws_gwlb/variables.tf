@@ -19,9 +19,9 @@ variable "elb_listener_port" {
   description = "Listener port for health check"
   default = "80"
 }
-variable "instance1_id" {
-  description = "Instance id of ec2 instance 1"
+variable "instance1_ip" {
+  description = "Instance IP of ec2 instance 1 private interface"
 }
-variable "instance2_id" {
-  description = "Instance id of ec2 instance 1"
+variable "instance2_ip" {
+  description = "Instance IP of ec2 instance 2 private interface"
 }

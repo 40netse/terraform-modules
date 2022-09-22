@@ -22,6 +22,7 @@ resource "aws_lb_target_group" "gwlb_target_group" {
   protocol = "GENEVE"
   port =  "6081"
   vpc_id = var.vpc_id
+  type = "ip"
   health_check {
     protocol = "TCP"
     port = var.elb_listener_port
@@ -77,12 +78,12 @@ data "aws_network_interface" "gwlb_ip2" {
 
 resource "aws_lb_target_group_attachment" "gwlb_target_group_attachment1" {
   target_group_arn = aws_lb_target_group.gwlb_target_group.arn
-  target_id = var.instance1_id
+  target_id = var.instance1_ip
 }
 
 resource "aws_lb_target_group_attachment" "gwlb_target_group_attachment2" {
   target_group_arn = aws_lb_target_group.gwlb_target_group.arn
-  target_id = var.instance2_id
+  target_id = var.instance2_ip
 }
 resource "aws_vpc_endpoint" "gwlb_endpoint_az1" {
   service_name      = aws_vpc_endpoint_service.endpoint_service.service_name
