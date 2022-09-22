@@ -13,7 +13,7 @@ output "network_private_interface_id" {
   value = aws_network_interface.private_eni.*.id
 }
 output "network_private_interface_ip" {
-  value = aws_network_interface.private_eni.private_ip
+  value = aws_network_interface.private_eni.*.private_ip
 }
 output "public_eip" {
   value = aws_eip.EIP.*.public_ip

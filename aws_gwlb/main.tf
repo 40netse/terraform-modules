@@ -22,7 +22,7 @@ resource "aws_lb_target_group" "gwlb_target_group" {
   protocol = "GENEVE"
   port =  "6081"
   vpc_id = var.vpc_id
-  type = "ip"
+  target_type = "ip"
   health_check {
     protocol = "TCP"
     port = var.elb_listener_port
