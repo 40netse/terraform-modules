@@ -17,10 +17,6 @@ variable "enable_private_interface" {
   description = "Boolean to Enable an Creation of HA Private ENI"
   default = false
 }
-variable "enable_sync_interface" {
-  description = "Boolean to Enable an Creation of Sync ENI"
-  default = false
-}
 variable "enable_hamgmt_interface" {
   description = "Boolean to Enable an Creation of HA Mgmt ENI"
   default = false
@@ -43,10 +39,6 @@ variable "private_subnet_id" {
 }
 variable "private_ip_address" {
   description = "Private ENI IP address"
-  default = ""
-}
-variable "sync_subnet_id" {
-  description = "Sync Subnet ID"
   default = ""
 }
 variable "sync_ip_address" {

@@ -19,23 +19,6 @@ resource "aws_eip" "HA_EIP" {
   }
 }
 
-resource "aws_network_interface" "sync_eni" {
-  count                       = var.enable_sync_interface ? 1 : 0
-  depends_on                  = [aws_instance.ec2]
-  subnet_id                   = var.sync_subnet_id
-  private_ips                 = [ var.sync_ip_address ]
-  security_groups             = [ var.security_group_public_id ]
-  source_dest_check           = false
-  attachment {
-    instance                  = aws_instance.ec2.id
-    device_index              = 2
-  }
-
-  tags = {
-    Name = "${var.aws_ec2_instance_name}-ENI_sync"
-  }
-}
-
 resource "aws_network_interface" "ha_eni" {
   count                       = var.enable_hamgmt_interface ? 1 : 0
   depends_on                  = [aws_instance.ec2]
