@@ -35,7 +35,8 @@ variable "public_ip_address" {
 }
 variable "secondary_private_ips" {
   description = "List of Secondary Private IPs"
-  default = ""
+  type        = list(string)
+  default     = null
 }
 variable "private_subnet_id" {
   description = "Private Subnet ID"
