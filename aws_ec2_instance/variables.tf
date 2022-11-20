@@ -33,6 +33,10 @@ variable "public_ip_address" {
   description = "Public ENI IP address"
   default = ""
 }
+variable "secondary_private_ips" {
+  description = "List of Secondary Private IPs"
+  default = ""
+}
 variable "private_subnet_id" {
   description = "Private Subnet ID"
   default = ""

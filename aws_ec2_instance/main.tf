@@ -61,6 +61,7 @@ resource "aws_instance" "ec2" {
   iam_instance_profile        = var.iam_instance_profile_id
   private_ip                  = var.public_ip_address
   security_groups             = [ var.security_group_public_id ]
+  secondary_private_ips       = [ var.secondary_private_ips ]
   tags = {
     Name            = var.aws_ec2_instance_name
   }
