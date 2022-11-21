@@ -30,7 +30,5 @@ variable "vpn_ecmp_support" {
   description = "Whether VPN Equal Cost Multipath Protocol support is enabled"
   default     = "enable"
 }
-variable "default_route_attachment_id" {
-  description = "tgw attachment id for tgw default route"
-}
+
 
