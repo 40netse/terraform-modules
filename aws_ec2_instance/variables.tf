@@ -33,6 +33,10 @@ variable "public_ip_address" {
   description = "Public ENI IP address"
   default = ""
 }
+variable "public_src_dst_check" {
+  description = "src/dst check on public interface"
+  default = true
+}
 variable "secondary_private_ips" {
   description = "List of Secondary Private IPs"
   type        = list(string)
