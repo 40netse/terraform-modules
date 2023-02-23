@@ -9,6 +9,14 @@ resource "aws_eip" "EIP" {
   }
 }
 
+resource "aws_eip_association" "AEIP" {
+  count                 = var.use_preallocated_elastic_ip ? 1 : 0
+  network_interface_id  = aws_instance.ec2.primary_network_interface_id
+  allocation_id         = var.preallocated_elastic_ip
+  depends_on            = [ aws_instance.ec2 ]
+}
+
+
 resource "aws_eip" "HA_EIP" {
   count                 = var.enable_mgmt_public_ips ? 1 : 0
   vpc                   = true

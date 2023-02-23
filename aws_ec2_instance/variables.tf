@@ -33,6 +33,10 @@ variable "public_ip_address" {
   description = "Public ENI IP address"
   default = ""
 }
+variable "preallocated_elastic_ip" {
+  description = "ID of a preallocated elastic IP"
+  default = ""
+}
 variable "public_src_dst_check" {
   description = "src/dst check on public interface"
   default = true
@@ -64,6 +68,10 @@ variable "ha_ip_address" {
 }
 variable "enable_public_ips" {
   description = "Boolean to Enable an Elastic IP on Public Interface"
+}
+variable "use_preallocated_elastic_ip" {
+  description = "Boolean to Enable an Elastic IP on Public Interface"
+  default = false
 }
 variable "enable_mgmt_public_ips" {
   description = "Boolean to Enable an Elastic IP Mgmt Interface"
