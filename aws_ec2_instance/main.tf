@@ -19,7 +19,7 @@ resource "aws_eip_association" "AEIP" {
 
 resource "aws_eip" "HA_EIP" {
   count                 = var.enable_mgmt_public_ips ? 1 : 0
-  vpc                   = true
+  domain                = "vpc"
   network_interface     = aws_network_interface.ha_eni[count.index].id
   depends_on            = [ aws_network_interface.ha_eni ]
   tags = {
