@@ -1,7 +1,7 @@
 
 resource "aws_eip" "EIP" {
   count                 = var.enable_public_ips ? 1 : 0
-  vpc                   = true
+  domain                = "vpc"
   network_interface     = aws_instance.ec2.primary_network_interface_id
   depends_on            = [ aws_instance.ec2 ]
   tags = {
