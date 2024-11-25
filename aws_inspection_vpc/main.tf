@@ -11,7 +11,10 @@ locals {
     natgw_subnet_index = 3
 }
 locals {
-  subnet_index_add_natgw = var.enable_nat_gateway ? 1 : 0
+    subnet_index_addon_for_natgw = var.enable_nat_gateway ? 1 : 0
+}
+locals {
+  subnet_index_add_natgw = local.natgw_subnet_index + local.subnet_index_addon_for_natgw
 }
 locals {
   public_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.public_subnet_index)
