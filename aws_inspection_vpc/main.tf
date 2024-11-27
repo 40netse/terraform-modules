@@ -64,15 +64,9 @@ data "aws_ec2_transit_gateway" "tgw" {
     values = ["available"]
   }
 }
-resource "null_resource" "previous" {}
-
-resource "time_sleep" "wait_5_minutes" {
-  create_duration = "5m"
-}
-
 module "vpc" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_vpc"
-  vpc_name                   = "${var.vpc_name}-inspection-vpc"
+  vpc_name                   = var.vpc_name
   vpc_cidr                   = var.vpc_cidr
 }
 #
@@ -86,7 +80,7 @@ resource "aws_default_route_table" "route_inspection" {
 }
 module "vpc-igw" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_igw"
-  igw_name                   = "${var.vpc_name}-inspection-igw"
+  igw_name                   = "${var.vpc_name}-igw"
   vpc_id                     = module.vpc.vpc_id
 }
 #
@@ -95,7 +89,7 @@ module "vpc-igw" {
 module "vpc-transit-gateway-attachment" {
   source                         = "git::https://github.com/40netse/terraform-modules.git//aws_tgw_attachment"
   count                          = var.enable_tgw_attachment  ? 1 : 0
-  tgw_attachment_name            = "${var.vpc_name}-inspection-tgw-attachment"
+  tgw_attachment_name            = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw.id
   subnet_ids                                      = [ module.subnet-private-az1.id, module.subnet-private-az2.id ]
