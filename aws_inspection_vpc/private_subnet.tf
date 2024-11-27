@@ -48,3 +48,6 @@ module "private-route-table-association-az2" {
   subnet_ids                 = module.subnet-private-az2.id
   route_table_id             = module.private-route-table-az2.id
 }
+#
+# Routes for the route table.
+#

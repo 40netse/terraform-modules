@@ -25,3 +25,7 @@ variable "named_tgw" {
   description = "Name of the TGW to attach to"
   type = string
 }
+variable "enable_tgw_attachment" {
+  description = "Boolean to enable attachment to a named TGW"
+  type = bool
+}
