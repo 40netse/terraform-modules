@@ -81,7 +81,7 @@ module "vpc" {
 resource "aws_default_route_table" "route_inspection" {
   default_route_table_id = module.vpc.vpc_main_route_table_id
   tags = {
-    Name = "default table for vpc inspection (unused)"
+    Name = "default table for ${var.vpc_name} (unused)"
   }
 }
 module "vpc-igw" {
@@ -92,7 +92,7 @@ module "vpc-igw" {
 #
 # Security VPC Transit Gateway Attachment, Route Table and Routes
 #
-module "vpc-transit-gateway-attachment-inspection" {
+module "vpc-transit-gateway-attachment" {
   source                         = "git::https://github.com/40netse/terraform-modules.git//aws_tgw_attachment"
   count                          = var.enable_tgw_attachment  ? 1 : 0
   tgw_attachment_name            = "${var.vpc_name}-inspection-tgw-attachment"
@@ -114,6 +114,6 @@ resource "aws_ec2_transit_gateway_route_table" "inspection" {
 
 resource "aws_ec2_transit_gateway_route_table_association" "inspection" {
   count                          = var.enable_tgw_attachment ? 1 : 0
-  transit_gateway_attachment_id  = module.vpc-transit-gateway-attachment-inspection[0].tgw_attachment_id
+  transit_gateway_attachment_id  = module.vpc-transit-gateway-attachment[0].tgw_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.inspection[0].id
 }
