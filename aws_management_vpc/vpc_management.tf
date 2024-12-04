@@ -51,7 +51,7 @@ module "vpc-transit-gateway-attachment-management" {
   count                          = var.enable_tgw_attachment ? 1 : 0
   tgw_attachment_name            = "${var.vpc_name}-mgmt-inspection-tgw-attachment"
 
-  transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
   subnet_ids                                      = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
   transit_gateway_default_route_table_propogation = "true"
   appliance_mode_support                          = "enable"
