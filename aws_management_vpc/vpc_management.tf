@@ -22,7 +22,7 @@ locals {
 }
 
 data "aws_ec2_transit_gateway" "tgw" {
-  count = enable_tgw_attachment ? 1 : 0
+  count = var.enable_tgw_attachment ? 1 : 0
   filter {
     name   = "tag:Name"
     values = [var.named_tgw]
