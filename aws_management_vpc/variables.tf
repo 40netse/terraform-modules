@@ -14,9 +14,6 @@ variable "acl" {
 variable "my_ip" {
     description = "CIDR for my IP to restrict security group"
 }
-variable "vpc_cidr_ns_inspection" {
-    description = "CIDR for the whole NS inspection VPC"
-}
 variable "vpc_name" {
   description = "The VPC Name"
   type = string
@@ -59,10 +56,6 @@ variable "fortimanager_license_file" {
   description = "Full path for FortiManager License"
   type        = string
   default     = ""
-}
-variable "enable_linux_spoke_instances" {
-  description = "Boolean to allow creation of Linux Spoke Instances in East and West VPCs"
-  type        = bool
 }
 variable "enable_fortimanager_public_ip" {
   description = "Boolean to allow creation of FortiManager public IP in Inspection VPC"
