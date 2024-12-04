@@ -148,21 +148,21 @@ resource "aws_route" "inspection-mgmt-gwlbe-192-route-igw-az1" {
   depends_on             = [module.vpc-transit-gateway-attachment-management]
   route_table_id         = module.management-public-route-table-az1.id
   destination_cidr_block = local.rfc1918_192
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw[0].id
 }
 resource "aws_route" "inspection-mgmt-gwlbe-10-route-igw-az1" {
   count                  = var.enable_tgw_attachment ? 1 : 0
   depends_on             = [module.vpc-transit-gateway-attachment-management]
   route_table_id         = module.management-public-route-table-az1.id
   destination_cidr_block = local.rfc1918_10
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw[0].id
 }
 resource "aws_route" "inspection-mgmt-gwlbe-172-route-igw-az1" {
   count                  = var.enable_tgw_attachment ? 1 : 0
   depends_on             = [module.vpc-transit-gateway-attachment-management]
   route_table_id         = module.management-public-route-table-az1.id
   destination_cidr_block = local.rfc1918_172
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw[0].id
 }
 resource "aws_route" "management-mgmt-public-default-route-ngw-az2" {
   depends_on             = [module.vpc-igw-management]
@@ -176,19 +176,19 @@ resource "aws_route" "inspection-mgmt-gwlbe-192-route-igw-az2" {
   depends_on             = [module.vpc-transit-gateway-attachment-management]
   route_table_id         = module.management-public-route-table-az2.id
   destination_cidr_block = local.rfc1918_192
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw[0].id
 }
 resource "aws_route" "inspection-mgmt-gwlbe-10-route-igw-az2" {
   count                  = var.enable_tgw_attachment ? 1 : 0
   depends_on             = [module.vpc-transit-gateway-attachment-management]
   route_table_id         = module.management-public-route-table-az2.id
   destination_cidr_block = local.rfc1918_10
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw[0].id
 }
 resource "aws_route" "inspection-mgmt-gwlbe-172-route-igw-az2" {
   count                  = var.enable_tgw_attachment ? 1 : 0
   depends_on             = [module.vpc-transit-gateway-attachment-management]
   route_table_id         = module.management-public-route-table-az2.id
   destination_cidr_block = local.rfc1918_172
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw[0].id
 }
