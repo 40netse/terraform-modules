@@ -8,6 +8,9 @@ variable "random_string" {
 variable "keypair" {
   description = "Keypair for instances that support keypairs"
 }
+variable "acl" {
+  description = "The acl for linux instances"
+}
 variable "my_ip" {
     description = "CIDR for my IP to restrict security group"
 }

@@ -25,24 +25,16 @@ locals {
 # would not make it to a production template.
 #
 data "template_file" "web_userdata_az1" {
-  count = var.enable_linux_spoke_instances || var.enable_jump_box ? 1 : 0
+  count = var.enable_jump_box ? 1 : 0
   template = file("./config_templates/web-userdata.tpl")
   vars = {
     region                = var.aws_region
     availability_zone     = var.availability_zone_1
   }
 }
-data "template_file" "web_userdata_az2" {
-  count = var.enable_linux_spoke_instances ? 1 : 0
-  template = file("./config_templates/web-userdata.tpl")
-  vars = {
-    region                = var.aws_region
-    availability_zone     = var.availability_zone_2
-  }
-}
 
 data "aws_ami" "ubuntu" {
-  count = var.enable_linux_spoke_instances || var.enable_jump_box ? 1 : 0
+  count = var.enable_jump_box ? 1 : 0
   most_recent = true
 
   filter {
@@ -72,21 +64,21 @@ resource "aws_security_group" "ec2-linux-jump-box-sg" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr_ns_inspection, var.vpc_cidr ]
+    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
   }
   ingress {
     description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
     from_port = 80
     to_port = 80
     protocol = "tcp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr_ns_inspection, var.vpc_cidr ]
+    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
   }
   ingress {
     description = "Allow ICMP from connected CIDRs"
     from_port = -1
     to_port = -1
     protocol = "icmp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr_ns_inspection, var.vpc_cidr ]
+    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
   }
   ingress {
     description = "Allow Syslog from anywhere IPv4"
@@ -109,7 +101,7 @@ resource "aws_security_group" "ec2-linux-jump-box-sg" {
 #
 module "linux_iam_profile" {
   source        = "git::https://github.com/40netse/terraform-modules.git//aws_ec2_instance_iam_role"
-  count         = var.enable_jump_box || var.enable_linux_spoke_instances ? 1 : 0
+  count         = var.enable_jump_box ? 1 : 0
   iam_role_name = "${var.vpc_name}-${var.random_string}-linux-instance_role"
 }
 
