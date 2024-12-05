@@ -71,7 +71,7 @@ module "subnet-management-public-az1" {
 }
 module "management-public-route-table-az1" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  rt_name = "${var.vpc_name}-management-public-rt-az1"
+  rt_name = "${var.vpc_name}-public-rt-az1"
 
   vpc_id                     = module.vpc-management.vpc_id
 }
@@ -95,7 +95,7 @@ module "subnet-management-public-az2" {
 }
 module "management-public-route-table-az2" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  rt_name = "${var.vpc_name}-management-public-rt-az2"
+  rt_name = "${var.vpc_name}-public-rt-az2"
 
   vpc_id                     = module.vpc-management.vpc_id
 }
