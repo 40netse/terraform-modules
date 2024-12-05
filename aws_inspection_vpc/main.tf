@@ -66,7 +66,7 @@ data "aws_ec2_transit_gateway" "tgw" {
 }
 module "vpc" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_vpc"
-  vpc_name                   = var.vpc_name
+  vpc_name                   = "${var.vpc_name}-vpc"
   vpc_cidr                   = var.vpc_cidr
 }
 #
