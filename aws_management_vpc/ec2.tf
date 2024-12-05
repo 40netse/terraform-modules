@@ -111,7 +111,7 @@ module "linux_iam_profile" {
 module "inspection_instance_jump_box" {
   count                       = var.enable_jump_box ? 1 : 0
   source                      = "git::https://github.com/40netse/terraform-modules.git//aws_ec2_instance"
-  aws_ec2_instance_name       = "${var.vpc_name}-ns-inspection-jump-box-instance"
+  aws_ec2_instance_name       = "${var.vpc_name}-jump-box-instance"
   enable_public_ips           = var.enable_jump_box_public_ip
   availability_zone           = var.availability_zone_1
   public_subnet_id            = module.subnet-management-public-az1.id
