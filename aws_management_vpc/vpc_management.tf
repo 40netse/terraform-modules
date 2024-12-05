@@ -38,18 +38,18 @@ data "aws_ec2_transit_gateway" "tgw" {
 #
 module "vpc-management" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_vpc"
-  vpc_name                   = "${var.vpc_name}-management-vpc"
+  vpc_name                   = "${var.vpc_name}-vpc"
   vpc_cidr                   = var.vpc_cidr
 }
 module "vpc-igw-management" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_igw"
-  igw_name                   = "${var.vpc_name}-management-igw"
+  igw_name                   = "${var.vpc_name}-igw"
   vpc_id                     = module.vpc-management.vpc_id
 }
 module "vpc-transit-gateway-attachment-management" {
   source                         = "git::https://github.com/40netse/terraform-modules.git//aws_tgw_attachment"
   count                          = var.enable_tgw_attachment ? 1 : 0
-  tgw_attachment_name            = "${var.vpc_name}-mgmt-inspection-tgw-attachment"
+  tgw_attachment_name            = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
   subnet_ids                                      = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
@@ -63,7 +63,7 @@ module "vpc-transit-gateway-attachment-management" {
 #
 module "subnet-management-public-az1" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
-  subnet_name                = "${var.vpc_name}-management-public-az1-subnet"
+  subnet_name                = "${var.vpc_name}-public-az1-subnet"
 
   vpc_id                     = module.vpc-management.vpc_id
   availability_zone          = var.availability_zone_1
@@ -87,7 +87,7 @@ module "management-public-route-table_association-az1" {
 #
 module "subnet-management-public-az2" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
-  subnet_name                = "${var.vpc_name}-management-public-az2-subnet"
+  subnet_name                = "${var.vpc_name}-public-az2-subnet"
 
   vpc_id                     = module.vpc-management.vpc_id
   availability_zone          = var.availability_zone_2
