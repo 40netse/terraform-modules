@@ -62,7 +62,7 @@ resource "aws_ec2_transit_gateway_route_table" "management" {
   count                          = var.enable_tgw_attachment ? 1 : 0
   transit_gateway_id             = data.aws_ec2_transit_gateway.tgw[0].id
     tags = {
-      Name = "${var.vpc_name}-management VPC TGW Route Table"
+      Name = "${var.vpc_name} VPC TGW Route Table"
   }
 }
 resource "aws_ec2_transit_gateway_route_table_association" "east" {
