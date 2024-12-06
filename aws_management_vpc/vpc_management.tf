@@ -58,6 +58,18 @@ module "vpc-transit-gateway-attachment-management" {
   vpc_id                                          = module.vpc-management.vpc_id
 }
 
+resource "aws_ec2_transit_gateway_route_table" "management" {
+  count                          = var.enable_tgw_attachment ? 1 : 0
+  transit_gateway_id             = data.aws_ec2_transit_gateway.tgw[0].id
+    tags = {
+      Name = "${var.vpc_name}-East VPC TGW Route Table"
+  }
+}
+resource "aws_ec2_transit_gateway_route_table_association" "east" {
+  count                          = var.enable_tgw_attachment ? 1 : 0
+  transit_gateway_attachment_id  = module.vpc-transit-gateway-attachment-management[0].tgw_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.management[0].id
+}
 #
 # AZ 1
 #
