@@ -83,6 +83,17 @@ module "vpc-igw" {
   igw_name                   = "${var.vpc_name}-igw"
   vpc_id                     = module.vpc.vpc_id
 }
+module "igw-route-table" {
+  source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
+  rt_name = "${var.vpc_name}-igw-rt"
+
+  vpc_id  = module.vpc.vpc_id
+}
+resource "aws_route_table_association" "b" {
+  gateway_id     = module.vpc-igw.igw_id
+  route_table_id = module.igw-route-table.id
+}
+
 #
 # Security VPC Transit Gateway Attachment, Route Table and Routes
 #
