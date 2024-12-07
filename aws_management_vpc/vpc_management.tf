@@ -53,7 +53,7 @@ module "vpc-transit-gateway-attachment-management" {
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
   subnet_ids                                      = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
-  transit_gateway_default_route_table_propogation = "true"
+  transit_gateway_default_route_table_propogation = "false"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc-management.vpc_id
 }
@@ -61,7 +61,8 @@ module "vpc-transit-gateway-attachment-management" {
 resource "aws_ec2_transit_gateway_route_table" "management" {
   count                          = var.enable_tgw_attachment ? 1 : 0
   transit_gateway_id             = data.aws_ec2_transit_gateway.tgw[0].id
-    tags = {
+  default_propagation_route_table = false
+  tags = {
       Name = "${var.vpc_name} VPC TGW Route Table"
   }
 }
