@@ -7,6 +7,6 @@ output "igw_id" {
   description = "The IGW Id of the newly created IGW."
 }
 output "management_tgw_attachment_id" {
-  value       = module.vpc-transit-gateway-attachment-management[0].id
+  value       = module.vpc-transit-gateway-attachment-management[0].tgw_attachment_id
   description = "The transit gateway attachment id for the management VPC."
 }
