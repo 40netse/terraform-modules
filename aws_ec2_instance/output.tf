@@ -1,8 +1,16 @@
 
+output "vpc_id" {
+  value = module.vpc-management.vpc_id
+}
+output "igw_id" {
+  value = module.vpc-igw-management.igw_id
+}
+output "tgw_route_table_id" {
+  value = aws_ec2_transit_gateway_route_table.management[0].id
+}
 output "instance_id" {
   value = aws_instance.ec2.id
 }
-
 output "network_public_interface_id" {
   value = aws_instance.ec2.primary_network_interface_id
 }
