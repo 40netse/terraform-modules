@@ -15,15 +15,15 @@ output "management_tgw_route_table_id" {
   description = "The transit gateway route table id for the management VPC."
 }
 output "jump_box_public_ip" {
-  value       = module.inspection_instance_jump_box.public_eip
+  value       = module.inspection_instance_jump_box[0].public_eip
   description = "The public IP address of the jump box."
 }
 output "jump_box_private_ip" {
-  value       = module.inspection_instance_jump_box.network_public_interface_ip
+  value       = module.inspection_instance_jump_box[0].network_public_interface_ip
   description = "The private IP address of the jump box."
 }
 output "fortimanager_public_ip" {
-  value       = module.fortimanager.public_eip
+  value       = module.fortimanager[0].public_eip
   description = "The public IP address of the FortiManager."
 }
 output "fortimanager_private_ip" {
@@ -31,10 +31,10 @@ output "fortimanager_private_ip" {
   description = "The private IP address of the FortiManager."
 }
 output "fortianalyzer_public_ip" {
-  value       = module.fortianalyzer.public_eip
+  value       = module.fortianalyzer[0].public_eip
   description = "The public IP address of the fortianalyzer."
 }
 output "fortianalyzer_private_ip" {
-  value       = module.fortianalyzer.network_public_interface_ip
+  value       = module.fortianalyzer[0].network_public_interface_ip
   description = "The private IP address of the fortianalyzer."
 }
