@@ -6,6 +6,22 @@ output "igw_id" {
   value       = module.vpc-igw-management.igw_id
   description = "The IGW Id of the newly created IGW."
 }
+output "subnet_management_public_az1_id" {
+  value       = module.subnet-management-public-az1.id
+  description = "The subnet Id of the public subnet in AZ1."
+}
+output "subnet_management_public_az2_id" {
+  value       = module.subnet-management-public-az2.id
+  description = "The subnet Id of the public subnet in AZ2."
+}
+output "subnet_management_private_az1_id" {
+  value       = module.subnet-management-private-az1.id
+  description = "The subnet Id of the private subnet in AZ1."
+}
+output "subnet_management_private_az2_id" {
+  value       = module.subnet-management-private-az2.id
+  description = "The subnet Id of the private subnet in AZ2."
+}
 output "management_tgw_attachment_id" {
   value = var.enable_tgw_attachment ? module.vpc-transit-gateway-attachment-management[0].tgw_attachment_id :null
   description = "The transit gateway attachment id for the management VPC."
