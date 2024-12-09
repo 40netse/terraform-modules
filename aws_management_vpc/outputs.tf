@@ -27,7 +27,7 @@ output "fortimanager_public_ip" {
   description = "The public IP address of the FortiManager."
 }
 output "fortimanager_private_ip" {
-  value       = module.fortimanager.network_public_interface_ip
+  value       = module.fortimanager[0].network_public_interface_ip
   description = "The private IP address of the FortiManager."
 }
 output "fortianalyzer_public_ip" {
