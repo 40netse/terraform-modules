@@ -48,36 +48,3 @@ module "public-route-table-association-az2" {
   subnet_ids                 = module.subnet-public-az2.id
   route_table_id             = module.public-route-table-az2.id
 }
-
-#
-# Routes for the route table. If nat gateway is enabled, make the default route go to the nat gateway.
-# If not, make the default route go to the internet gateway.
-#
-resource "aws_route" "inspection-ns-public-default-route-ngw-az1" {
-  depends_on             = [aws_nat_gateway.vpc-az1]
-  count                  = var.enable_nat_gateway ? 1 : 0
-  route_table_id         = module.public-route-table-az1.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.vpc-az1[0].id
-}
-resource "aws_route" "inspection-ns-public-default-route-ngw-az2" {
-  depends_on             = [aws_nat_gateway.vpc-az2]
-  count                  = var.enable_nat_gateway ? 1 : 0
-  route_table_id         = module.public-route-table-az2.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.vpc-az2[0].id
-}
-resource "aws_route" "inspection-ns-public-default-route-igw-az1" {
-  depends_on             = [module.vpc-igw]
-  count                  = !var.enable_nat_gateway ? 1 : 0
-  route_table_id         = module.public-route-table-az1.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = module.vpc-igw.igw_id
-}
-resource "aws_route" "inspection-ns-public-default-route-igw-az2" {
-  depends_on             = [module.vpc-igw]
-  count                  = !var.enable_nat_gateway ? 1 : 0
-  route_table_id         = module.public-route-table-az2.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = module.vpc-igw.igw_id
-}

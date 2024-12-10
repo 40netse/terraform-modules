@@ -48,37 +48,3 @@ module "gwlbe-route-table-association-az2" {
   subnet_ids                 = module.subnet-gwlbe-az2.id
   route_table_id             = module.gwlbe-route-table-az2.id
 }
-#
-# This is a bit bruce force. Route all the rfc-1918 space to the TGW. More specific route will handle the local traffic.
-#
-
-resource "aws_route" "gwlbe-192-route-igw-az1" {
-  route_table_id         = module.gwlbe-route-table-az1.id
-  destination_cidr_block = local.rfc1918_192
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
-}
-resource "aws_route" "gwlbe-192-route-igw-az2" {
-  route_table_id         = module.gwlbe-route-table-az2.id
-  destination_cidr_block = local.rfc1918_192
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
-}
-resource "aws_route" "gwlbe-10-route-igw-az1" {
-  route_table_id         = module.gwlbe-route-table-az1.id
-  destination_cidr_block = local.rfc1918_10
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
-}
-resource "aws_route" "gwlbe-10-route-igw-az2" {
-  route_table_id         = module.gwlbe-route-table-az2.id
-  destination_cidr_block = local.rfc1918_10
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
-}
-resource "aws_route" "gwlbe-172-route-igw-az1" {
-  route_table_id         = module.gwlbe-route-table-az1.id
-  destination_cidr_block = local.rfc1918_172
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
-}
-resource "aws_route" "gwlbe-172-route-igw-az2" {
-  route_table_id         = module.gwlbe-route-table-az2.id
-  destination_cidr_block = local.rfc1918_172
-  transit_gateway_id     = data.aws_ec2_transit_gateway.tgw.id
-}

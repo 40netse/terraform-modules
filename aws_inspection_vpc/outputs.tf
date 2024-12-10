@@ -30,5 +30,38 @@ output "subnet_private_az2_id" {
   value       = module.subnet-private-az2.id
   description = "The subnet Id of the private subnet in AZ2."
 }
+output "route_table_public_az1_id" {
+  value       = module.public-route-table-az1.id
+  description = "The route table Id of the public subnet in AZ1."
+}
+output "route_table_public_az2_id" {
+  value       = module.public-route-table-az2.id
+  description = "The route table Id of the public subnet in AZ2."
+}
+output "route_table_gwlbe_az1_id" {
+  value       = module.gwlbe-route-table-az1.id
+  description = "The route table Id of the gwlbe subnet in AZ1."
+}
+output "route_table_gwlbe_az2_id" {
+  value       = module.gwlbe-route-table-az2.id
+  description = "The route table Id of the gwlbe subnet in AZ2."
+}
+output "route_table_private_az1_id" {
+  value       = module.private-route-table-az1.id
+  description = "The route table Id of the private subnet in AZ1."
+}
+output "route_table_private_az2_id" {
+  value       = module.private-route-table-az2.id
+  description = "The route table Id of the private subnet in AZ2."
+}
+output "route_table_natgw_az1_id" {
+  value       = module.natgw-route-table-az1.id
+  description = "The route table Id of the natgw subnet in AZ1."
+}
+output "route_table_natgw_az2_id" {
+  value       = module.natgw-route-table-az2.id
+  description = "The route table Id of the natgw subnet in AZ2."
+}
+
 
 
