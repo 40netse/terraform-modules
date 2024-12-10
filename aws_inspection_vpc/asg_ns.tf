@@ -69,7 +69,7 @@ resource "aws_security_group" "management-vpc-sg" {
 
 module "spk_tgw_gwlb_asg_fgt_igw" {
   source = "git::https://github.com/fortinetdev/terraform-aws-cloud-modules.git//examples/spk_tgw_gwlb_asg_fgt_igw"
-
+  depends_on = [module.vpc-igw]
   ## Note: Please go through all arguments in this file and replace the content with your configuration! This file is just an example.
   ## "<YOUR-OWN-VALUE>" are parameters that you need to specify your own value.
 
