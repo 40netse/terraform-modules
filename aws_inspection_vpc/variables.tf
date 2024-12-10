@@ -51,7 +51,7 @@ variable "enable_tgw_attachment" {
   description = "Boolean to enable attachment to a named TGW"
   type = bool
 }
-variable "ns_module_prefix" {
+variable "module_prefix" {
   description = "Module Prefix for East/West Autoscale Group"
   type        = string
 }
@@ -66,31 +66,31 @@ variable "fgt_instance_type" {
   description = "Instance type for all of the Fortigates in the ASG's"
   type        = string
 }
-variable "ns_byol_asg_min_size" {
+variable "byol_asg_min_size" {
     description = "Minimum size for the BYOL ASG"
     type        = number
 }
-variable "ns_byol_asg_max_size" {
+variable "byol_asg_max_size" {
     description = "Maximum size for the BYOL ASG"
     type        = number
 }
-variable "ns_byol_asg_desired_size" {
+variable "byol_asg_desired_size" {
     description = "Desired size for the BYOL ASG"
     type        = number
 }
-variable "ns_ondemand_asg_min_size" {
+variable "ondemand_asg_min_size" {
     description = "Minimum size for the On Demand ASG"
     type        = number
 }
-variable "ns_ondemand_asg_max_size" {
+variable "ondemand_asg_max_size" {
     description = "Maximum size for the OnDemand ASG"
     type        = number
 }
-variable "ns_ondemand_asg_desired_size" {
+variable "ondemand_asg_desired_size" {
     description = "Desired size for the OnDemand ASG"
     type        = number
 }
-variable "ns_license_directory" {
+variable "license_directory" {
   description = "License Directory for North/South Autoscale Group"
   type        = string
 }

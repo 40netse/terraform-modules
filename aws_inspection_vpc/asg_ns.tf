@@ -76,7 +76,7 @@ module "spk_tgw_gwlb_asg_fgt_igw" {
   ## Root config
   region     = var.aws_region
 
-  module_prefix = var.ns_module_prefix
+  module_prefix = var.module_prefix
   existing_security_vpc = {
     id = module.vpc.vpc_id
   }
@@ -195,7 +195,7 @@ module "spk_tgw_gwlb_asg_fgt_igw" {
       instance_type   = var.fgt_instance_type
       fgt_password    = var.fortigate_asg_password
       keypair_name    = var.keypair
-      lic_folder_path = var.ns_license_directory
+      lic_folder_path = var.license_directory
       # fortiflex_refresh_token = "<YOUR-OWN-VALUE>" # e.g. "NasmPa0CXpd56n6TzJjGqpqZm9Thyw"
       # fortiflex_sn_list = "<YOUR-OWN-VALUE>" # e.g. ["FGVMMLTM00000001", "FGVMMLTM00000002"]
       # fortiflex_configid_list = "<YOUR-OWN-VALUE>" # e.g. [2343]
@@ -210,9 +210,9 @@ module "spk_tgw_gwlb_asg_fgt_igw" {
       # user_conf_content : FortiGate Configuration
       # user_conf_file_path : The file path of configuration file
       # user_conf_s3 : Map of AWS S3
-      asg_max_size          = var.ns_byol_asg_max_size
-      asg_min_size          = var.ns_byol_asg_min_size
-      asg_desired_capacity  = var.ns_byol_asg_desired_size
+      asg_max_size          = var.byol_asg_max_size
+      asg_min_size          = var.byol_asg_min_size
+      asg_desired_capacity  = var.byol_asg_desired_size
       create_dynamodb_table = true
       dynamodb_table_name   = "fgt_asg_track_table"
     },
@@ -254,9 +254,9 @@ module "spk_tgw_gwlb_asg_fgt_igw" {
       # user_conf_content : FortiGate Configuration
       # user_conf_file_path : The file path of configuration file
       # user_conf_s3 : Map of AWS S3
-      asg_max_size          = var.ns_ondemand_asg_max_size
-      asg_min_size          = var.ns_ondemand_asg_min_size
-      asg_desired_capacity  = var.ns_ondemand_asg_desired_size
+      asg_max_size          = var.ondemand_asg_max_size
+      asg_min_size          = var.ondemand_asg_min_size
+      asg_desired_capacity  = var.ondemand_asg_desired_size
       asg_max_size = 2
       asg_min_size = 0
       # asg_desired_capacity = 0
