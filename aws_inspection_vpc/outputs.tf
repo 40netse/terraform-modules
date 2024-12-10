@@ -55,19 +55,19 @@ output "route_table_private_az2_id" {
   description = "The route table Id of the private subnet in AZ2."
 }
 output "route_table_natgw_az1_id" {
-  value       = module.natgw-route-table-az1.id
+  value       = var.enable_nat_gateway ? module.natgw-route-table-az1[0].id : null
   description = "The route table Id of the natgw subnet in AZ1."
 }
 output "route_table_natgw_az2_id" {
-  value       = module.natgw-route-table-az2.id
+  value       = var.enable_nat_gateway ? module.natgw-route-table-az2[0].id : null
   description = "The route table Id of the natgw subnet in AZ2."
 }
 output "aws_nat_gateway_vpc_az1_id" {
-  value       = aws_nat_gateway.vpc-az1[0].id
+  value       = var.enable_nat_gateway ? aws_nat_gateway.vpc-az1[0].id : null
   description = "The NAT Gateway Id of the NAT Gateway in AZ1."
 }
 output "aws_nat_gateway_vpc_az2_id" {
-  value       = aws_nat_gateway.vpc-az2[0].id
+  value       = var.enable_nat_gateway ? aws_nat_gateway.vpc-az2[0].id : null 
   description = "The NAT Gateway Id of the NAT Gateway in AZ2."
 }
 
