@@ -81,19 +81,7 @@ module "subnet-management-public-az1" {
   availability_zone          = var.availability_zone_1
   subnet_cidr                = local.management_public_subnet_cidr_az1
 }
-module "management-public-route-table-az1" {
-  source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  rt_name = "${var.vpc_name}-public-rt-az1"
 
-  vpc_id                     = module.vpc-management.vpc_id
-}
-
-module "management-public-route-table_association-az1" {
-  source   = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-
-  subnet_ids                 = module.subnet-management-public-az1.id
-  route_table_id             = module.management-public-route-table-az1.id
-}
 #
 # AZ 2
 #
@@ -105,26 +93,14 @@ module "subnet-management-public-az2" {
   availability_zone          = var.availability_zone_2
   subnet_cidr                = local.management_public_subnet_cidr_az2
 }
-module "management-public-route-table-az2" {
-  source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  rt_name = "${var.vpc_name}-public-rt-az2"
 
-  vpc_id                     = module.vpc-management.vpc_id
-}
-
-module "management-public-route-table_association-az2" {
-  source   = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-
-  subnet_ids                 = module.subnet-management-public-az2.id
-  route_table_id             = module.management-public-route-table-az2.id
-}
 #
 # Default route table that is created with the main VPC.
 #
 resource "aws_default_route_table" "route_management" {
   default_route_table_id = module.vpc-management.vpc_main_route_table_id
   tags = {
-    Name = "default table for vpc management (unused)"
+    Name = "${var.cp}-${var.env}-management-main-route-table"
   }
 }
 resource "aws_security_group" "management-vpc-sg" {

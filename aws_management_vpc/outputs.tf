@@ -46,12 +46,9 @@ output "fortianalyzer_private_ip" {
   value = var.enable_fortianalyzer ? module.fortianalyzer[0].network_public_interface_ip : null
   description = "The private IP address of the fortianalyzer."
 }
-output "route_table_management_public_az1_id" {
-  value       = module.management-public-route-table-az1.id
+output "route_table_management_public" {
+  value       = module.vpc-management.vpc_main_route_table_id
   description = "The route table Id of the public subnet in AZ1."
 }
-output "route_table_management_public_az2_id" {
-  value       = module.management-public-route-table-az2.id
-  description = "The route table Id of the public subnet in AZ2."
-}
+
 
