@@ -70,6 +70,13 @@ output "aws_nat_gateway_vpc_az2_id" {
   value       = var.enable_nat_gateway ? aws_nat_gateway.vpc-az2[0].id : null 
   description = "The NAT Gateway Id of the NAT Gateway in AZ2."
 }
-
+output "inspection_tgw_attachment_id" {
+  value       = var.enable_tgw_attachment ? module.vpc-transit-gateway-attachment[0].tgw_attachment_id : null
+  description = "The transit gateway attachment id for the VPC."
+}
+output "inspection_tgw_route_table_id" {
+  value       = var.enable_tgw_attachment ? aws_ec2_transit_gateway_route_table.inspection[0].id : null
+  description = "The transit gateway route table id for the VPC."
+}
 
 
