@@ -31,19 +31,19 @@ output "subnet_private_az2_id" {
   description = "The subnet Id of the private subnet in AZ2."
 }
 output "subnet_natgw_az1_id" {
-  value       = var.enable_nat_gateway ? module.subnet-natgw-az1.id : null
+  value       = var.enable_nat_gateway ? module.subnet-natgw-az1[0].id : null
   description = "The subnet Id of the natgw subnet in AZ1."
 }
 output "subnet_natgw_az2_id" {
-  value       = var.enable_nat_gateway ? module.subnet-natgw-az2.id : null
+  value       = var.enable_nat_gateway ? module.subnet-natgw-az2[0].id : null
   description = "The subnet Id of the natgw subnet in AZ2."
 }
 output "subnet_management_az1_id" {
-  value       = var.enable_dedicated_management_eni ? module.subnet-management-az1.id : null
+  value       = var.enable_dedicated_management_eni ? module.subnet-management-az1[0].id : null
   description = "The subnet Id of the management subnet in AZ1."
 }
 output "subnet_management_az2_id" {
-  value       = var.enable_dedicated_management_eni ? module.subnet-management-az1.id : null
+  value       = var.enable_dedicated_management_eni ? module.subnet-management-az1[0].id : null
   description = "The subnet Id of the management subnet in AZ2."
 }
 output "route_table_public_az1_id" {
