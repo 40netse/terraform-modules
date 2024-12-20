@@ -17,10 +17,10 @@ locals {
     subnet_index_addon_for_natgw = var.enable_nat_gateway ? 1 : 0
 }
 locals {
-    subnet_index_addon_for_management = var.enable_nat_gateway ? 1 : 0
+    subnet_index_addon_for_management = var.enable_dedicated_management_eni ? 1 : 0
 }
 locals {
-  subnet_index_add_natgw_mgmt = local.natgw_subnet_index +
+  subnet_index_add_natgw_mgmt = local.management_subnet_index +
                                 local.subnet_index_addon_for_natgw +
                                 local.subnet_index_addon_for_management
 }
