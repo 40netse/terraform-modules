@@ -20,9 +20,7 @@ locals {
     subnet_index_addon_for_management = var.enable_dedicated_management_eni ? 1 : 0
 }
 locals {
-  subnet_index_add_natgw_mgmt = local.management_subnet_index +
-                                local.subnet_index_addon_for_natgw +
-                                local.subnet_index_addon_for_management
+  subnet_index_add_natgw_mgmt = local.management_subnet_index + local.subnet_index_addon_for_natgw + local.subnet_index_addon_for_management
 }
 locals {
   rfc1918_192 = "192.168.0.0/16"
