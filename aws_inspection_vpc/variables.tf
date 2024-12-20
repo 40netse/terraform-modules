@@ -28,3 +28,7 @@ variable "enable_tgw_attachment" {
   description = "Boolean to enable attachment to a named TGW"
   type = bool
 }
+variable "enable_dedicated_management_eni" {
+  description = "Boolean to allow creation of dedicated management subnets and ENI in the inspection VPC"
+  type        = bool
+}

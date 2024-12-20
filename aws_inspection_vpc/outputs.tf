@@ -30,6 +30,22 @@ output "subnet_private_az2_id" {
   value       = module.subnet-private-az2.id
   description = "The subnet Id of the private subnet in AZ2."
 }
+output "subnet_natgw_az1_id" {
+  value       = var.enable_nat_gateway ? module.subnet-natgw-az1.id : null
+  description = "The subnet Id of the natgw subnet in AZ1."
+}
+output "subnet_natgw_az2_id" {
+  value       = var.enable_nat_gateway ? module.subnet-natgw-az2.id : null
+  description = "The subnet Id of the natgw subnet in AZ2."
+}
+output "subnet_management_az1_id" {
+  value       = var.enable_dedicated_management_eni ? module.subnet-management-az1.id : null
+  description = "The subnet Id of the management subnet in AZ1."
+}
+output "subnet_management_az2_id" {
+  value       = var.enable_dedicated_management_eni ? module.subnet-management-az1.id : null
+  description = "The subnet Id of the management subnet in AZ2."
+}
 output "route_table_public_az1_id" {
   value       = module.public-route-table-az1.id
   description = "The route table Id of the public subnet in AZ1."
@@ -61,6 +77,14 @@ output "route_table_natgw_az1_id" {
 output "route_table_natgw_az2_id" {
   value       = var.enable_nat_gateway ? module.natgw-route-table-az2[0].id : null
   description = "The route table Id of the natgw subnet in AZ2."
+}
+output "route_table_management_az1_id" {
+  value       = var.enable_dedicated_management_eni ? module.management-route-table-az1[0].id : null
+  description = "The route table Id of the management subnet in AZ1."
+}
+output "route_table_management_az2_id" {
+  value       = var.enable_dedicated_management_eni ? module.management-route-table-az2[0].id : null
+  description = "The route table Id of the management subnet in AZ2."
 }
 output "aws_nat_gateway_vpc_az1_id" {
   value       = var.enable_nat_gateway ? aws_nat_gateway.vpc-az1[0].id : null

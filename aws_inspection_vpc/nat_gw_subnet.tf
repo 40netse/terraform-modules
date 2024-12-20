@@ -82,14 +82,14 @@ resource "aws_nat_gateway" "vpc-az2" {
 # If not, make the default route go to the internet gateway.
 #
 
-resource "aws_route" "inspection-ns-natgw-default-route-ngw-az1" {
+resource "aws_route" "inspection-ns-natgw-default-route-az1" {
   depends_on             = [aws_nat_gateway.vpc-az1]
   count                  = var.enable_nat_gateway ? 1 : 0
   route_table_id         = module.natgw-route-table-az1[0].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc-igw.igw_id
 }
-resource "aws_route" "inspection-ns-natgw-default-route-ngw-az2" {
+resource "aws_route" "inspection-ns-natgw-default-route-az2" {
   depends_on             = [aws_nat_gateway.vpc-az2]
   count                  = var.enable_nat_gateway ? 1 : 0
   route_table_id         = module.natgw-route-table-az2[0].id
