@@ -98,6 +98,10 @@ variable "fortianalyzer_os_version" {
 variable "fortianalyzer_host_ip" {
   description = "Fortianalyzer IP Address"
 }
+variable "fortianalyzer_user_data" {
+  description = "User data for Fortianalyzer"
+  type        = string
+}
 variable "enable_fortianalyzer_public_ip" {
   description = "Boolean to allow creation of FortiAnalyzer public IP in Inspection VPC"
   type        = bool
