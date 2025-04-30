@@ -187,7 +187,7 @@ module "fortimanager" {
   public_ip_address           = local.fortimanager_ip_address
   aws_ami                     = data.aws_ami.fortimanager[0].id
   keypair                     = var.keypair
-  security_group_public_id    = var.fortimanager_sg_id
+  security_group_public_id    = aws_security_group.fortimanager_sg[0].id
   userdata_rendered           = var.enable_fortimanager ? var.fortimanager_user_data : ""
   iam_instance_profile_id     = module.iam_profile[0].id
 }

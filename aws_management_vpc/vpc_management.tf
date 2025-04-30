@@ -34,6 +34,81 @@ data "aws_ec2_transit_gateway" "tgw" {
 }
 
 #
+# This is an "allow all" security group, but a place holder for a more strict SG
+#
+resource aws_security_group "fortimanager_sg" {
+  count       = var.enable_fortimanager ? 1 : 0
+  name        = "allow_public_subnets_fmg"
+  vpc_id      = module.vpc-management.vpc_id
+  description = "Fortimanager Allow required ports from public Subnets"
+  ingress {
+    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = [ var.my_ip ]
+  }
+  ingress {
+    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = [ var.my_ip ]
+  }
+  ingress {
+    description = "Allow Web Filter"
+    from_port = 8900
+    to_port = 8900
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+   ingress {
+    description = "Allow ICMP"
+    from_port = -1
+    to_port = -1
+    protocol = "icmp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+   ingress {
+    description = "Allow FGFM protocol"
+    from_port = 541
+    to_port = 541
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  ingress {
+    description = "Allow AV Query and GEO IP Service"
+    from_port = 8902
+    to_port = 8903
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  ingress {
+    description = "Allow Cascade Mode"
+    from_port = 8891
+    to_port = 8891
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  ingress {
+    description = "Allow HA Protocol"
+    from_port = 5199
+    to_port = 5199
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "allow_fortimanager_required_ports"
+  }
+}
+
+#
 # Spoke VPC
 #
 module "vpc-management" {
