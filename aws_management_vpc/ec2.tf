@@ -125,17 +125,6 @@ module "inspection_instance_jump_box" {
   userdata_rendered           = data.template_file.web_userdata_az1[0].rendered
 }
 
-#
-# Fortianalyzer
-#
-data "template_file" "faz_userdata" {
-  count                = var.enable_fortianalyzer ? 1 : 0
-  template = file("./config_templates/faz-userdata.tpl")
-  vars = {
-    faz_byol_license      = var.enable_fortianalyzer ? (var.fortianalyzer_license_file) : ""
-  }
-}
-
 data "aws_ami" "fortimanager" {
   count                = var.enable_fortimanager ? 1 : 0
   most_recent = true
