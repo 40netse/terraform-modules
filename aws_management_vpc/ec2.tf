@@ -126,17 +126,6 @@ module "inspection_instance_jump_box" {
 }
 
 #
-# Fortimanager
-#
-data "template_file" "fmgr_userdata" {
-  count                = var.enable_fortimanager ? 1 : 0
-  template             = file("./config_templates/fmgr-userdata.tpl")
-  vars = {
-    fmgr_byol_license  = var.enable_fortimanager ? (var.fortimanager_license_file) : ""
-  }
-}
-
-#
 # Fortianalyzer
 #
 data "template_file" "faz_userdata" {
@@ -187,67 +176,6 @@ module "iam_profile" {
   iam_role_name = "${var.vpc_name}-${var.random_string}-fortimanager-instance-role"
 }
 
-#
-# This is an "allow all" security group, but a place holder for a more strict SG
-#
-resource aws_security_group "fortimanager_sg" {
-  count       = var.enable_fortimanager ? 1 : 0
-  name        = "allow_public_subnets_fmg"
-  description = "Fortimanager Allow required ports from public Subnets"
-  vpc_id      = module.vpc-management.vpc_id
-  ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = [ var.my_ip ]
-  }
-  ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = [ var.my_ip ]
-  }
-  ingress {
-    description = "Allow Web Filter"
-    from_port = 8900
-    to_port = 8900
-    protocol = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-  ingress {
-    description = "Allow AV Query and GEO IP Service"
-    from_port = 8902
-    to_port = 8903
-    protocol = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-  ingress {
-    description = "Allow Cascade Mode"
-    from_port = 8891
-    to_port = 8891
-    protocol = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-  ingress {
-    description = "Allow HA Protocol"
-    from_port = 5199
-    to_port = 5199
-    protocol = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    Name = "allow_fortimanager_required_ports"
-  }
-}
-
 module "fortimanager" {
   source                      = "git::https://github.com/40netse/terraform-modules.git//aws_ec2_instance"
   count                       = var.enable_fortimanager ? 1 : 0
@@ -259,9 +187,9 @@ module "fortimanager" {
   public_ip_address           = local.fortimanager_ip_address
   aws_ami                     = data.aws_ami.fortimanager[0].id
   keypair                     = var.keypair
-  security_group_public_id    = aws_security_group.fortimanager_sg[0].id
+  security_group_public_id    = var.fortimanager_sg_id
+  userdata_rendered           = var.enable_fortimanager ? var.fortimanager_user_data : ""
   iam_instance_profile_id     = module.iam_profile[0].id
-  userdata_rendered           = var.enable_fortimanager ? data.template_file.fmgr_userdata[0].rendered : ""
 }
 
 resource aws_security_group "fortianalyzer_sg" {

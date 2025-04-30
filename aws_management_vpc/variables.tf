@@ -76,6 +76,14 @@ variable "fortimanager_os_version" {
 variable "fortimanager_host_ip" {
   description = "Fortimanager IP Address"
 }
+variable "fortimanager_sg_id" {
+  description = "Security Group ID for Fortimanager"
+  type        = string
+}
+variable "fortimanager_user_data" {
+  description = "User data for Fortimanager"
+  type        = string
+}
 variable "enable_fortianalyzer" {
   description = "Boolean to allow creation of FortiAnalyzer in Inspection VPC"
   type        = bool
