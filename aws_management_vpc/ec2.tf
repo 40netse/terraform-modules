@@ -257,5 +257,4 @@ module "fortianalyzer" {
   security_group_public_id    = aws_security_group.fortianalyzer_sg[0].id
   userdata_rendered           = var.enable_fortianalyzer ? var.fortianalyzer_user_data : ""
   iam_instance_profile_id     = module.iam_profile[0].id
-  userdata_rendered           = var.enable_fortianalyzer ? data.template_file.faz_userdata[0].rendered : ""
 }
