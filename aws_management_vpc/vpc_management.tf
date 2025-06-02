@@ -46,7 +46,7 @@ resource aws_security_group "fortimanager_sg" {
     from_port = 443
     to_port = 443
     protocol = "tcp"
-    cidr_blocks = [ var.my_ip ]
+    cidr_blocks = [ var.my_ip, "10.3.0.0/16" ]
   }
   ingress {
     description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
