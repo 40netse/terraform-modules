@@ -17,8 +17,13 @@ variable "subnet_bits" {
   type = number
 }
 variable "enable_nat_gateway" {
-  description = "Boolean to enable NAT Gateway to be created within the inspection vpc"
+  description = "Boolean to enable NAT Gateway Subnets to be created within the inspection vpc"
   type = bool
+}
+variable "create_nat_gateway" {
+  description = "Boolean to enable the actual creation of the NAT Gateways to be created within the inspection vpc"
+  type = bool
+  default = true
 }
 variable "named_tgw" {
   description = "Name of the TGW to attach to"

@@ -29,10 +29,10 @@ module "natgw-route-table-association-az1" {
   route_table_id             = module.natgw-route-table-az1[0].id
 }
 resource "aws_eip" "nat-gateway-az1" {
-  count = var.enable_nat_gateway ? 1 : 0
+  count = var.create_nat_gateway ? 1 : 0
 }
 resource "aws_nat_gateway" "vpc-az1" {
-  count             = var.enable_nat_gateway ? 1 : 0
+  count             = var.create_nat_gateway ? 1 : 0
   allocation_id     = aws_eip.nat-gateway-az1[0].id
   subnet_id         = module.subnet-natgw-az1[0].id
   tags = {
@@ -67,10 +67,10 @@ module "natgw-route-table-association-az2" {
   route_table_id             = module.natgw-route-table-az2[0].id
 }
 resource "aws_eip" "nat-gateway-az2" {
-  count = var.enable_nat_gateway ? 1 : 0
+  count = var.create_nat_gateway ? 1 : 0
 }
 resource "aws_nat_gateway" "vpc-az2" {
-  count             = var.enable_nat_gateway ? 1 : 0
+  count             = var.create_nat_gateway ? 1 : 0
   allocation_id     = aws_eip.nat-gateway-az2[0].id
   subnet_id         = module.subnet-natgw-az2[0].id
   tags = {
