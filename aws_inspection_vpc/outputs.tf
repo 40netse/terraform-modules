@@ -87,11 +87,11 @@ output "route_table_management_az2_id" {
   description = "The route table Id of the management subnet in AZ2."
 }
 output "aws_nat_gateway_vpc_az1_id" {
-  value       = var.create_nat_gateway ? aws_nat_gateway.vpc-az1[0].id : null
+  value       = var.create_nat_gateway && var.enable_nat_gateway ? aws_nat_gateway.vpc-az1[0].id : null
   description = "The NAT Gateway Id of the NAT Gateway in AZ1."
 }
 output "aws_nat_gateway_vpc_az2_id" {
-  value       = var.create_nat_gateway ? aws_nat_gateway.vpc-az2[0].id : null 
+  value       = var.create_nat_gateway && var.enable_nat_gateway ? aws_nat_gateway.vpc-az2[0].id : null
   description = "The NAT Gateway Id of the NAT Gateway in AZ2."
 }
 output "inspection_tgw_attachment_id" {
