@@ -55,13 +55,11 @@ output "route_table_public_az2_id" {
   description = "The route table Id of the public subnet in AZ2."
 }
 output "route_table_gwlbe_az1_id" {
-  count       = var.create_gwlb_route_associations ? 1 : 0
-  value       = module.gwlbe-route-table-az1[0].id
+  value       = var.create_gwlb_route_associations ? module.gwlbe-route-table-az1[0].id : null
   description = "The route table Id of the gwlbe subnet in AZ1."
 }
 output "route_table_gwlbe_az2_id" {
-  count       = var.create_gwlb_route_associations ? 1 : 0
-  value       = module.gwlbe-route-table-az2[0].id
+  value       = var.create_gwlb_route_associations ? module.gwlbe-route-table-az2[0].id : null
   description = "The route table Id of the gwlbe subnet in AZ2."
 }
 output "route_table_private_az1_id" {
