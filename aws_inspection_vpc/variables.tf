@@ -37,3 +37,8 @@ variable "enable_dedicated_management_eni" {
   description = "Boolean to allow creation of dedicated management subnets and ENI in the inspection VPC"
   type        = bool
 }
+variable "create_gwlb_route_associations" {
+  description = "Boolean to conditionally create the gwlb route table associations"
+  type        = bool
+  default     = true
+}
