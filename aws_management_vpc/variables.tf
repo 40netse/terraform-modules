@@ -54,6 +54,11 @@ variable "enable_jump_box_public_ip" {
   description = "Boolean to allow creation of Linux Jump Box public IP in Inspection VPC"
   type        = bool
 }
+variable "enable_source_dest_check" {
+  description = "Boolean to enable/disable source/dest check on Fortigate instances"
+  type        = bool
+  default     = false
+}
 variable "enable_fortimanager" {
   description = "Boolean to allow creation of FortiManager in Inspection VPC"
   type        = bool

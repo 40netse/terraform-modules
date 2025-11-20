@@ -130,7 +130,7 @@ module "inspection_instance_jump_box" {
   acl                         = var.acl
   iam_instance_profile_id     = module.linux_iam_profile[0].id
   userdata_rendered           = data.template_file.web_userdata_az1[0].rendered
-  source_dest_check           = false
+  source_dest_check           = var.enable_source_dest_check
 }
 
 data "aws_ami" "fortimanager" {
