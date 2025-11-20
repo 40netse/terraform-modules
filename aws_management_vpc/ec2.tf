@@ -74,6 +74,13 @@ resource "aws_security_group" "ec2-linux-jump-box-sg" {
     cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
   }
   ingress {
+    description = "Allow HTTPs from Anywhere IPv4 (change this to My IP)"
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr, var.vpc_cidr_east, var.vpc_cidr_west ]
+  }
+  ingress {
     description = "Allow ICMP from connected CIDRs"
     from_port = -1
     to_port = -1
@@ -123,6 +130,7 @@ module "inspection_instance_jump_box" {
   acl                         = var.acl
   iam_instance_profile_id     = module.linux_iam_profile[0].id
   userdata_rendered           = data.template_file.web_userdata_az1[0].rendered
+  source_dest_check           = false
 }
 
 data "aws_ami" "fortimanager" {
