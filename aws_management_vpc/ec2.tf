@@ -64,28 +64,28 @@ resource "aws_security_group" "ec2-linux-jump-box-sg" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
+    cidr_blocks = var.vpc_cidr
   }
   ingress {
     description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
     from_port = 80
     to_port = 80
     protocol = "tcp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
+    cidr_blocks = var.vpc_cidr
   }
   ingress {
     description = "Allow HTTPs from Anywhere IPv4 (change this to My IP)"
     from_port = 443
     to_port = 443
     protocol = "tcp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr, var.vpc_cidr_east, var.vpc_cidr_west ]
+    cidr_blocks = var.vpc_cidr
   }
   ingress {
     description = "Allow ICMP from connected CIDRs"
     from_port = -1
     to_port = -1
     protocol = "icmp"
-    cidr_blocks = [ var.my_ip, var.vpc_cidr, var.vpc_cidr ]
+    cidr_blocks = var.vpc_cidr
   }
   ingress {
     description = "Allow Syslog from anywhere IPv4"

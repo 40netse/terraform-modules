@@ -26,7 +26,8 @@ variable "vpc_name" {
 }
 variable "vpc_cidr" {
   description = "CIDR for the whole VPC"
-  type = string
+  default = []
+  type = list(string)
 }
 variable "subnet_bits" {
   description = "Number of bits to use for each subnet"
