@@ -26,6 +26,11 @@ variable "vpc_name" {
 }
 variable "vpc_cidr" {
   description = "CIDR for the whole VPC"
+  default = ""
+  type = string
+}
+variable "vpc_cidr_sg" {
+  description = "List of CIDRS for the security group"
   default = []
   type = list(string)
 }
