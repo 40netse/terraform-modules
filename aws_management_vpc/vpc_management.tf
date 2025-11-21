@@ -2,6 +2,9 @@ locals {
     public_subnet_index = 0
 }
 locals {
+    private_subnet_index = 2
+}
+locals {
   rfc1918_192 = "192.168.0.0/16"
 }
 locals {
@@ -15,6 +18,12 @@ locals {
 }
 locals {
   management_public_subnet_cidr_az2 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.public_subnet_index + 1)
+}
+locals {
+  management_private_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index)
+}
+locals {
+  management_private_subnet_cidr_az2 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index + 1)
 }
 
 locals {
@@ -127,7 +136,7 @@ module "vpc-transit-gateway-attachment-management" {
   tgw_attachment_name            = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
-  subnet_ids                                      = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
+  subnet_ids                                      = var.enable_jump_box ? [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id] : [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
   transit_gateway_default_route_table_propogation = "false"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc-management.vpc_id

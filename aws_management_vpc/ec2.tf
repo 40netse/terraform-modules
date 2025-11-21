@@ -18,21 +18,6 @@ locals {
 # Endpoint AMI to use for Linux Instances. Just added this on the end, since traffic generating linux instances
 # would not make it to a production template.
 #
-#
-# Linux Instance that are added on to the East and West VPCs for testing EAST->West Traffic
-#
-# Endpoint AMI to use for Linux Instances. Just added this on the end, since traffic generating linux instances
-# would not make it to a production template.
-#
-data "template_file" "web_userdata_az1" {
-  count = var.enable_jump_box ? 1 : 0
-  template = file("./config_templates/web-userdata.tpl")
-  vars = {
-    region                = var.aws_region
-    availability_zone     = var.availability_zone_1
-  }
-}
-
 data "aws_ami" "ubuntu" {
   count = var.enable_jump_box ? 1 : 0
   most_recent = true
@@ -113,6 +98,15 @@ module "linux_iam_profile" {
 }
 
 #
+# Wait for networking to stabilize before creating jump box
+#
+resource "time_sleep" "wait_for_networking" {
+  count           = var.enable_jump_box ? 1 : 0
+  depends_on      = [module.subnet-management-public-az1]
+  create_duration = "180s"  # 3 minutes
+}
+
+#
 # East Linux Instance for Jump Box
 #
 module "inspection_instance_jump_box" {
@@ -129,8 +123,10 @@ module "inspection_instance_jump_box" {
   security_group_public_id    = aws_security_group.ec2-linux-jump-box-sg[0].id
   acl                         = var.acl
   iam_instance_profile_id     = module.linux_iam_profile[0].id
-  userdata_rendered           = data.template_file.web_userdata_az1[0].rendered
+  userdata_rendered           = var.linux_user_data
   public_src_dst_check        = var.enable_source_dest_check
+
+  depends_on                  = [time_sleep.wait_for_networking]
 }
 
 data "aws_ami" "fortimanager" {
