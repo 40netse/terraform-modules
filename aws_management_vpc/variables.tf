@@ -9,7 +9,7 @@ variable "env" {
 }
 variable "random_string" {
   description = "The random string to append to any run specific resources"
-  type = string
+  type        = string
 }
 variable "keypair" {
   description = "Keypair for instances that support keypairs"
@@ -17,26 +17,23 @@ variable "keypair" {
 variable "acl" {
   description = "The acl for linux instances"
 }
-variable "my_ip" {
-    description = "CIDR for my IP to restrict security group"
-}
 variable "vpc_name" {
   description = "The VPC Name"
-  type = string
+  type        = string
 }
 variable "vpc_cidr" {
   description = "CIDR for the whole VPC"
-  default = ""
-  type = string
+  default     = ""
+  type        = string
 }
 variable "vpc_cidr_sg" {
   description = "List of CIDRS for the security group"
-  default = []
-  type = list(string)
+  default     = []
+  type        = list(string)
 }
 variable "subnet_bits" {
   description = "Number of bits to use for each subnet"
-  type = number
+  type        = number
 }
 variable "availability_zone_1" {
   description = "Availability Zone 1"
@@ -46,11 +43,11 @@ variable "availability_zone_2" {
 }
 variable "named_tgw" {
   description = "Name of the TGW to attach to"
-  type = string
+  type        = string
 }
 variable "enable_tgw_attachment" {
   description = "Boolean to enable attachment to a named TGW"
-  type = bool
+  type        = bool
 }
 variable "enable_jump_box" {
   description = "Boolean to allow creation of Linux Jump Box in Inspection VPC"
