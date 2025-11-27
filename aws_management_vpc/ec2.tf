@@ -198,6 +198,13 @@ resource "aws_security_group" "fortianalyzer_sg" {
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
+    description = "Allow ICMP from connected CIDRs"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = var.vpc_cidr_sg
+  }
+  ingress {
     description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
     from_port   = 22
     to_port     = 22
