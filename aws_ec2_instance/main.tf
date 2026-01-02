@@ -64,7 +64,7 @@ resource "aws_instance" "ec2" {
   subnet_id                   = var.public_subnet_id
   source_dest_check           = var.public_src_dst_check
   key_name                    = var.keypair
-  user_data_base64            = var.userdata_rendered
+  user_data                   = var.userdata_rendered
   iam_instance_profile        = var.iam_instance_profile_id
   private_ip                  = var.public_ip_address
   security_groups             = [ var.security_group_public_id ]
