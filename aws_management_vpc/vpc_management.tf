@@ -136,7 +136,7 @@ module "vpc-transit-gateway-attachment-management" {
   tgw_attachment_name = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
-  subnet_ids                                      = var.enable_jump_box ? [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id] : [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
+  subnet_ids                                      = [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id]
   transit_gateway_default_route_table_propogation = "false"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc-management.vpc_id
