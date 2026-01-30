@@ -15,12 +15,20 @@ output "subnet_management_public_az2_id" {
   description = "The subnet Id of the public subnet in AZ2."
 }
 output "subnet_management_private_az1_id" {
-  value       = var.enable_jump_box ? module.subnet-management-private-az1[0].id : null
+  value       = (var.enable_jump_box || var.enable_tgw_attachment) ? module.subnet-management-private-az1[0].id : null
   description = "The subnet Id of the private subnet in AZ1."
 }
 output "subnet_management_private_az2_id" {
-  value       = var.enable_jump_box ? module.subnet-management-private-az2[0].id : null
+  value       = (var.enable_jump_box || var.enable_tgw_attachment) ? module.subnet-management-private-az2[0].id : null
   description = "The subnet Id of the private subnet in AZ2."
+}
+output "route_table_management_private_az1" {
+  value       = (var.enable_jump_box || var.enable_tgw_attachment) ? module.private-route-table-az1[0].id : null
+  description = "The route table Id of the private subnet in AZ1."
+}
+output "route_table_management_private_az2" {
+  value       = (var.enable_jump_box || var.enable_tgw_attachment) ? module.private-route-table-az2[0].id : null
+  description = "The route table Id of the private subnet in AZ2."
 }
 output "management_tgw_attachment_id" {
   value       = var.enable_tgw_attachment ? module.vpc-transit-gateway-attachment-management[0].tgw_attachment_id : null

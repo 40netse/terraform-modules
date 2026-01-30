@@ -57,22 +57,3 @@ module "private-route-table-association-az2" {
   subnet_ids     = module.subnet-management-private-az2[0].id
   route_table_id = module.private-route-table-az2[0].id
 }
-
-#
-# Routes for the private subnet route tables.
-# Default route points to the jump box ENI to allow NAT through jump box.
-# Only created when jump box is enabled.
-#
-resource "aws_route" "private-route-az1-default" {
-  count                  = var.enable_jump_box ? 1 : 0
-  route_table_id         = module.private-route-table-az1[0].id
-  destination_cidr_block = "0.0.0.0/0"
-  network_interface_id   = module.inspection_instance_jump_box[0].network_public_interface_id
-}
-
-resource "aws_route" "private-route-az2-default" {
-  count                  = var.enable_jump_box ? 1 : 0
-  route_table_id         = module.private-route-table-az2[0].id
-  destination_cidr_block = "0.0.0.0/0"
-  network_interface_id   = module.inspection_instance_jump_box[0].network_public_interface_id
-}
