@@ -1,8 +1,9 @@
 
 #
 # All things private subnet related. (subnets, route tables, routes)
-# Private subnets are only created when jump box is enabled to allow
-# east/west spoke traffic to NAT through the jump box.
+# Private subnets are created when jump box OR TGW attachment is enabled.
+# - TGW attachment uses private subnets for the attachment
+# - Jump box uses private subnets for NAT routing from spoke VPCs
 #
 
 #
@@ -10,7 +11,7 @@
 #
 module "subnet-management-private-az1" {
   source      = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
-  count       = var.enable_jump_box ? 1 : 0
+  count       = (var.enable_jump_box || var.enable_tgw_attachment) ? 1 : 0
   subnet_name = "${var.vpc_name}-private-az1-subnet"
 
   vpc_id            = module.vpc-management.vpc_id
@@ -19,14 +20,14 @@ module "subnet-management-private-az1" {
 }
 module "private-route-table-az1" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  count   = var.enable_jump_box ? 1 : 0
+  count   = (var.enable_jump_box || var.enable_tgw_attachment) ? 1 : 0
   rt_name = "${var.vpc_name}-private-rt-az1"
 
   vpc_id = module.vpc-management.vpc_id
 }
 module "private-route-table-association-az1" {
   source         = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-  count          = var.enable_jump_box ? 1 : 0
+  count          = (var.enable_jump_box || var.enable_tgw_attachment) ? 1 : 0
   subnet_ids     = module.subnet-management-private-az1[0].id
   route_table_id = module.private-route-table-az1[0].id
 }
@@ -36,7 +37,7 @@ module "private-route-table-association-az1" {
 #
 module "subnet-management-private-az2" {
   source      = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
-  count       = var.enable_jump_box ? 1 : 0
+  count       = (var.enable_jump_box || var.enable_tgw_attachment) ? 1 : 0
   subnet_name = "${var.vpc_name}-private-az2-subnet"
 
   vpc_id            = module.vpc-management.vpc_id
@@ -45,14 +46,14 @@ module "subnet-management-private-az2" {
 }
 module "private-route-table-az2" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  count   = var.enable_jump_box ? 1 : 0
+  count   = (var.enable_jump_box || var.enable_tgw_attachment) ? 1 : 0
   rt_name = "${var.vpc_name}-private-rt-az2"
 
   vpc_id = module.vpc-management.vpc_id
 }
 module "private-route-table-association-az2" {
   source         = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-  count          = var.enable_jump_box ? 1 : 0
+  count          = (var.enable_jump_box || var.enable_tgw_attachment) ? 1 : 0
   subnet_ids     = module.subnet-management-private-az2[0].id
   route_table_id = module.private-route-table-az2[0].id
 }
@@ -60,6 +61,7 @@ module "private-route-table-association-az2" {
 #
 # Routes for the private subnet route tables.
 # Default route points to the jump box ENI to allow NAT through jump box.
+# Only created when jump box is enabled.
 #
 resource "aws_route" "private-route-az1-default" {
   count                  = var.enable_jump_box ? 1 : 0
