@@ -62,6 +62,10 @@ output "jump_box_instance_id" {
   value       = var.enable_jump_box ? module.inspection_instance_jump_box[0].instance_id : null
   description = "The instance ID of the jump box."
 }
+output "fortimanager_instance_id" {
+  value       = var.enable_fortimanager ? module.fortimanager[0].instance_id : null
+  description = "The instance ID of the FortiManager."
+}
 output "fortimanager_public_ip" {
   value       = var.enable_fortimanager &&  var.enable_fortimanager_public_ip ? module.fortimanager[0].public_eip : null
   description = "The public IP address of the FortiManager."
@@ -69,6 +73,10 @@ output "fortimanager_public_ip" {
 output "fortimanager_private_ip" {
   value       = var.enable_fortimanager ? module.fortimanager[0].network_public_interface_ip : null
   description = "The private IP address of the FortiManager."
+}
+output "fortianalyzer_instance_id" {
+  value       = var.enable_fortianalyzer ? module.fortianalyzer[0].instance_id : null
+  description = "The instance ID of the FortiAnalyzer."
 }
 output "fortianalyzer_public_ip" {
   value       = var.enable_fortianalyzer && var.enable_fortianalyzer_public_ip ? module.fortianalyzer[0].public_eip : null
