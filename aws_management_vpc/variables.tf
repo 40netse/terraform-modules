@@ -41,6 +41,10 @@ variable "availability_zone_1" {
 variable "availability_zone_2" {
   description = "Availability Zone 2"
 }
+variable "availability_zone_3" {
+  description = "Availability Zone 3"
+  default     = ""
+}
 variable "named_tgw" {
   description = "Name of the TGW to attach to"
   type        = string

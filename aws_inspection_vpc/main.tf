@@ -39,11 +39,19 @@ locals {
                                                                      local.subnet_index_add_natgw_mgmt)
 }
 locals {
+  public_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.public_subnet_index +
+                                                                     2 * local.subnet_index_add_natgw_mgmt)
+}
+locals {
   gwlbe_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.gwlbe_subnet_index)
 }
 locals {
   gwlbe_subnet_cidr_az2 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.gwlbe_subnet_index +
                                                                     local.subnet_index_add_natgw_mgmt)
+}
+locals {
+  gwlbe_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.gwlbe_subnet_index +
+                                                                    2 * local.subnet_index_add_natgw_mgmt)
 }
 locals {
   private_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index)
@@ -53,6 +61,10 @@ locals {
                                                                       local.subnet_index_add_natgw_mgmt)
 }
 locals {
+  private_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index +
+                                                                      2 * local.subnet_index_add_natgw_mgmt)
+}
+locals {
   natgw_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.natgw_subnet_index)
 }
 locals {
@@ -60,11 +72,19 @@ locals {
                                                                     local.subnet_index_add_natgw_mgmt)
 }
 locals {
+  natgw_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.natgw_subnet_index +
+                                                                    2 * local.subnet_index_add_natgw_mgmt)
+}
+locals {
   management_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.management_subnet_index)
 }
 locals {
   management_subnet_cidr_az2 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.management_subnet_index +
                                                                     local.subnet_index_add_natgw_mgmt)
+}
+locals {
+  management_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.management_subnet_index +
+                                                                    2 * local.subnet_index_add_natgw_mgmt)
 }
 data "aws_ec2_transit_gateway" "tgw" {
   filter {
@@ -115,7 +135,7 @@ module "vpc-transit-gateway-attachment" {
   tgw_attachment_name            = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw.id
-  subnet_ids                                      = [ module.subnet-private-az1.id, module.subnet-private-az2.id ]
+  subnet_ids                                      = [ module.subnet-private-az1.id, module.subnet-private-az2.id, module.subnet-private-az3.id ]
   transit_gateway_default_route_table_propogation = "true"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc.vpc_id

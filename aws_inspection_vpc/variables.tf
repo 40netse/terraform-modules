@@ -4,6 +4,10 @@ variable "availability_zone_1" {
 variable "availability_zone_2" {
   description = "Availability Zone 2 for VPC"
 }
+variable "availability_zone_3" {
+  description = "Availability Zone 3 for VPC"
+  default     = ""
+}
 variable "vpc_name" {
   description = "The VPC Name"
   type = string

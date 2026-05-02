@@ -20,14 +20,20 @@ locals {
   management_public_subnet_cidr_az2 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.public_subnet_index + 1)
 }
 locals {
+  management_public_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.public_subnet_index + 2)
+}
+locals {
   management_private_subnet_cidr_az1 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index)
 }
 locals {
   management_private_subnet_cidr_az2 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index + 1)
 }
+locals {
+  management_private_subnet_cidr_az3 = cidrsubnet(var.vpc_cidr, var.subnet_bits, local.private_subnet_index + 2)
+}
 
 locals {
-  management_subnet_ids = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
+  management_subnet_ids = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id, module.subnet-management-public-az3.id]
 }
 
 data "aws_ec2_transit_gateway" "tgw" {
@@ -136,7 +142,7 @@ module "vpc-transit-gateway-attachment-management" {
   tgw_attachment_name = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
-  subnet_ids                                      = [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id]
+  subnet_ids                                      = [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id, module.subnet-management-private-az3[0].id]
   transit_gateway_default_route_table_propogation = "false"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc-management.vpc_id
@@ -176,6 +182,18 @@ module "subnet-management-public-az2" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_2
   subnet_cidr       = local.management_public_subnet_cidr_az2
+}
+
+#
+# AZ 3
+#
+module "subnet-management-public-az3" {
+  source      = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
+  subnet_name = "${var.vpc_name}-public-az3-subnet"
+
+  vpc_id            = module.vpc-management.vpc_id
+  availability_zone = var.availability_zone_3
+  subnet_cidr       = local.management_public_subnet_cidr_az3
 }
 
 #

@@ -48,6 +48,29 @@ module "private-route-table-association-az2" {
   subnet_ids                 = module.subnet-private-az2.id
   route_table_id             = module.private-route-table-az2.id
 }
+
+#
+# AZ3
+#
+module "subnet-private-az3" {
+  source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
+  subnet_name                = "${var.vpc_name}-private-az3-subnet"
+
+  vpc_id                     = module.vpc.vpc_id
+  availability_zone          = var.availability_zone_3
+  subnet_cidr                = local.private_subnet_cidr_az3
+}
+module "private-route-table-az3" {
+  source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
+  rt_name = "${var.vpc_name}-private-rt-az3"
+
+  vpc_id  = module.vpc.vpc_id
+}
+module "private-route-table-association-az3" {
+  source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
+  subnet_ids                 = module.subnet-private-az3.id
+  route_table_id             = module.private-route-table-az3.id
+}
 #
 # Routes for the route table.
 #
