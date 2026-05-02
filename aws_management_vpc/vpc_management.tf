@@ -2,7 +2,7 @@ locals {
   public_subnet_index = 0
 }
 locals {
-  private_subnet_index = 2
+  private_subnet_index = 3
 }
 locals {
   rfc1918_192 = "192.168.0.0/16"
