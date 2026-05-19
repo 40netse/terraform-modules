@@ -15,7 +15,7 @@ output "subnet_management_public_az2_id" {
   description = "The subnet Id of the public subnet in AZ2."
 }
 output "subnet_management_public_az3_id" {
-  value       = module.subnet-management-public-az3.id
+  value       = var.availability_zone_3 != "" ? module.subnet-management-public-az3[0].id : null
   description = "The subnet Id of the public subnet in AZ3."
 }
 output "subnet_management_private_az1_id" {
@@ -27,7 +27,7 @@ output "subnet_management_private_az2_id" {
   description = "The subnet Id of the private subnet in AZ2."
 }
 output "subnet_management_private_az3_id" {
-  value       = (var.enable_jump_box || var.enable_tgw_attachment) ? module.subnet-management-private-az3[0].id : null
+  value       = (var.enable_jump_box || var.enable_tgw_attachment) && var.availability_zone_3 != "" ? module.subnet-management-private-az3[0].id : null
   description = "The subnet Id of the private subnet in AZ3."
 }
 output "route_table_management_private_az1" {
@@ -39,7 +39,7 @@ output "route_table_management_private_az2" {
   description = "The route table Id of the private subnet in AZ2."
 }
 output "route_table_management_private_az3" {
-  value       = (var.enable_jump_box || var.enable_tgw_attachment) ? module.private-route-table-az3[0].id : null
+  value       = (var.enable_jump_box || var.enable_tgw_attachment) && var.availability_zone_3 != "" ? module.private-route-table-az3[0].id : null
   description = "The route table Id of the private subnet in AZ3."
 }
 output "management_tgw_attachment_id" {

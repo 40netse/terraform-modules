@@ -33,7 +33,7 @@ locals {
 }
 
 locals {
-  management_subnet_ids = [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id, module.subnet-management-public-az3.id]
+  management_subnet_ids = var.availability_zone_3 != "" ? [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id, module.subnet-management-public-az3[0].id] : [module.subnet-management-public-az1.id, module.subnet-management-public-az2.id]
 }
 
 data "aws_ec2_transit_gateway" "tgw" {
@@ -142,7 +142,7 @@ module "vpc-transit-gateway-attachment-management" {
   tgw_attachment_name = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
-  subnet_ids                                      = [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id, module.subnet-management-private-az3[0].id]
+  subnet_ids                                      = var.availability_zone_3 != "" ? [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id, module.subnet-management-private-az3[0].id] : [module.subnet-management-private-az1[0].id, module.subnet-management-private-az2[0].id]
   transit_gateway_default_route_table_propogation = "false"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc-management.vpc_id
@@ -189,6 +189,7 @@ module "subnet-management-public-az2" {
 #
 module "subnet-management-public-az3" {
   source      = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
+  count       = var.availability_zone_3 != "" ? 1 : 0
   subnet_name = "${var.vpc_name}-public-az3-subnet"
 
   vpc_id            = module.vpc-management.vpc_id
