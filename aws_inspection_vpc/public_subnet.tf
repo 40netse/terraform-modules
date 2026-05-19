@@ -54,6 +54,7 @@ module "public-route-table-association-az2" {
 #
 module "subnet-public-az3" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
+  count                      = var.availability_zone_3 != "" ? 1 : 0
   subnet_name                = "${var.vpc_name}-public-az3-subnet"
 
   vpc_id                     = module.vpc.vpc_id
@@ -62,12 +63,14 @@ module "subnet-public-az3" {
 }
 module "public-route-table-az3" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
+  count   = var.availability_zone_3 != "" ? 1 : 0
   rt_name = "${var.vpc_name}-public-rt-az3"
 
   vpc_id  = module.vpc.vpc_id
 }
 module "public-route-table-association-az3" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-  subnet_ids                 = module.subnet-public-az3.id
-  route_table_id             = module.public-route-table-az3.id
+  count                      = var.availability_zone_3 != "" ? 1 : 0
+  subnet_ids                 = module.subnet-public-az3[0].id
+  route_table_id             = module.public-route-table-az3[0].id
 }

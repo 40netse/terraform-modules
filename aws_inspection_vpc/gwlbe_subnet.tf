@@ -58,6 +58,7 @@ module "gwlbe-route-table-association-az2" {
 #
 module "subnet-gwlbe-az3" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
+  count                      = var.availability_zone_3 != "" ? 1 : 0
   subnet_name                = "${var.vpc_name}-gwlbe-az3-subnet"
 
   vpc_id                     = module.vpc.vpc_id
@@ -66,14 +67,14 @@ module "subnet-gwlbe-az3" {
 }
 module "gwlbe-route-table-az3" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  count   = var.create_gwlb_route_associations ? 1 : 0
+  count   = (var.create_gwlb_route_associations && var.availability_zone_3 != "") ? 1 : 0
   rt_name = "${var.vpc_name}-gwlbe-rt-az3"
 
   vpc_id  = module.vpc.vpc_id
 }
 module "gwlbe-route-table-association-az3" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-  count                      = var.create_gwlb_route_associations ? 1 : 0
-  subnet_ids                 = module.subnet-gwlbe-az3.id
+  count                      = (var.create_gwlb_route_associations && var.availability_zone_3 != "") ? 1 : 0
+  subnet_ids                 = module.subnet-gwlbe-az3[0].id
   route_table_id             = module.gwlbe-route-table-az3[0].id
 }

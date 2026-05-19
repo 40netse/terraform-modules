@@ -135,7 +135,7 @@ module "vpc-transit-gateway-attachment" {
   tgw_attachment_name            = "${var.vpc_name}-tgw-attachment"
 
   transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw.id
-  subnet_ids                                      = [ module.subnet-private-az1.id, module.subnet-private-az2.id, module.subnet-private-az3.id ]
+  subnet_ids                                      = var.availability_zone_3 != "" ? [ module.subnet-private-az1.id, module.subnet-private-az2.id, module.subnet-private-az3[0].id ] : [ module.subnet-private-az1.id, module.subnet-private-az2.id ]
   transit_gateway_default_route_table_propogation = "true"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc.vpc_id

@@ -102,7 +102,7 @@ resource "aws_route" "inspection-ns-natgw-default-route-az2" {
 #
 module "subnet-natgw-az3" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
-  count                      = var.enable_nat_gateway ? 1 : 0
+  count                      = (var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
   subnet_name                = "${var.vpc_name}-natgw-az3-subnet"
 
   vpc_id                     = module.vpc.vpc_id
@@ -111,22 +111,22 @@ module "subnet-natgw-az3" {
 }
 module "natgw-route-table-az3" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  count   = var.enable_nat_gateway ? 1 : 0
+  count   = (var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
   rt_name = "${var.vpc_name}-natgw-rt-az3"
 
   vpc_id  = module.vpc.vpc_id
 }
 module "natgw-route-table-association-az3" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-  count                      = var.enable_nat_gateway ? 1 : 0
+  count                      = (var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
   subnet_ids                 = module.subnet-natgw-az3[0].id
   route_table_id             = module.natgw-route-table-az3[0].id
 }
 resource "aws_eip" "nat-gateway-az3" {
-  count = var.create_nat_gateway && var.enable_nat_gateway ? 1 : 0
+  count = (var.create_nat_gateway && var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
 }
 resource "aws_nat_gateway" "vpc-az3" {
-  count             = var.create_nat_gateway && var.enable_nat_gateway ? 1 : 0
+  count             = (var.create_nat_gateway && var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
   allocation_id     = aws_eip.nat-gateway-az3[0].id
   subnet_id         = module.subnet-natgw-az3[0].id
   tags = {
@@ -135,7 +135,7 @@ resource "aws_nat_gateway" "vpc-az3" {
 }
 resource "aws_route" "inspection-ns-natgw-default-route-az3" {
   depends_on             = [aws_nat_gateway.vpc-az3]
-  count                  = var.enable_nat_gateway ? 1 : 0
+  count                  = (var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
   route_table_id         = module.natgw-route-table-az3[0].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc-igw.igw_id

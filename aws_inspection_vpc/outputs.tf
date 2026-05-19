@@ -15,7 +15,7 @@ output "subnet_public_az2_id" {
   description = "The subnet Id of the public subnet in AZ2."
 }
 output "subnet_public_az3_id" {
-  value       = module.subnet-public-az3.id
+  value       = var.availability_zone_3 != "" ? module.subnet-public-az3[0].id : null
   description = "The subnet Id of the public subnet in AZ3."
 }
 output "subnet_gwlbe_az1_id" {
@@ -27,7 +27,7 @@ output "subnet_gwlbe_az2_id" {
   description = "The subnet Id of the gwlbe subnet in AZ2."
 }
 output "subnet_gwlbe_az3_id" {
-  value       = module.subnet-gwlbe-az3.id
+  value       = var.availability_zone_3 != "" ? module.subnet-gwlbe-az3[0].id : null
   description = "The subnet Id of the gwlbe subnet in AZ3."
 }
 output "subnet_private_az1_id" {
@@ -39,7 +39,7 @@ output "subnet_private_az2_id" {
   description = "The subnet Id of the private subnet in AZ2."
 }
 output "subnet_private_az3_id" {
-  value       = module.subnet-private-az3.id
+  value       = var.availability_zone_3 != "" ? module.subnet-private-az3[0].id : null
   description = "The subnet Id of the private subnet in AZ3."
 }
 output "subnet_natgw_az1_id" {
@@ -51,7 +51,7 @@ output "subnet_natgw_az2_id" {
   description = "The subnet Id of the natgw subnet in AZ2."
 }
 output "subnet_natgw_az3_id" {
-  value       = var.enable_nat_gateway ? module.subnet-natgw-az3[0].id : null
+  value       = (var.enable_nat_gateway && var.availability_zone_3 != "") ? module.subnet-natgw-az3[0].id : null
   description = "The subnet Id of the natgw subnet in AZ3."
 }
 output "subnet_management_az1_id" {
@@ -63,7 +63,7 @@ output "subnet_management_az2_id" {
   description = "The subnet Id of the management subnet in AZ2."
 }
 output "subnet_management_az3_id" {
-  value       = var.enable_dedicated_management_eni ? module.subnet-management-az3[0].id : null
+  value       = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? module.subnet-management-az3[0].id : null
   description = "The subnet Id of the management subnet in AZ3."
 }
 output "route_table_public_az1_id" {
@@ -75,7 +75,7 @@ output "route_table_public_az2_id" {
   description = "The route table Id of the public subnet in AZ2."
 }
 output "route_table_public_az3_id" {
-  value       = module.public-route-table-az3.id
+  value       = var.availability_zone_3 != "" ? module.public-route-table-az3[0].id : null
   description = "The route table Id of the public subnet in AZ3."
 }
 output "route_table_gwlbe_az1_id" {
@@ -87,7 +87,7 @@ output "route_table_gwlbe_az2_id" {
   description = "The route table Id of the gwlbe subnet in AZ2."
 }
 output "route_table_gwlbe_az3_id" {
-  value       = var.create_gwlb_route_associations ? module.gwlbe-route-table-az3[0].id : null
+  value       = (var.create_gwlb_route_associations && var.availability_zone_3 != "") ? module.gwlbe-route-table-az3[0].id : null
   description = "The route table Id of the gwlbe subnet in AZ3."
 }
 output "route_table_private_az1_id" {
@@ -99,7 +99,7 @@ output "route_table_private_az2_id" {
   description = "The route table Id of the private subnet in AZ2."
 }
 output "route_table_private_az3_id" {
-  value       = module.private-route-table-az3.id
+  value       = var.availability_zone_3 != "" ? module.private-route-table-az3[0].id : null
   description = "The route table Id of the private subnet in AZ3."
 }
 output "route_table_natgw_az1_id" {
@@ -111,7 +111,7 @@ output "route_table_natgw_az2_id" {
   description = "The route table Id of the natgw subnet in AZ2."
 }
 output "route_table_natgw_az3_id" {
-  value       = var.enable_nat_gateway ? module.natgw-route-table-az3[0].id : null
+  value       = (var.enable_nat_gateway && var.availability_zone_3 != "") ? module.natgw-route-table-az3[0].id : null
   description = "The route table Id of the natgw subnet in AZ3."
 }
 output "route_table_management_az1_id" {
@@ -123,7 +123,7 @@ output "route_table_management_az2_id" {
   description = "The route table Id of the management subnet in AZ2."
 }
 output "route_table_management_az3_id" {
-  value       = var.enable_dedicated_management_eni ? module.management-route-table-az3[0].id : null
+  value       = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? module.management-route-table-az3[0].id : null
   description = "The route table Id of the management subnet in AZ3."
 }
 output "aws_nat_gateway_vpc_az1_id" {
@@ -135,7 +135,7 @@ output "aws_nat_gateway_vpc_az2_id" {
   description = "The NAT Gateway Id of the NAT Gateway in AZ2."
 }
 output "aws_nat_gateway_vpc_az3_id" {
-  value       = var.create_nat_gateway && var.enable_nat_gateway ? aws_nat_gateway.vpc-az3[0].id : null
+  value       = (var.create_nat_gateway && var.enable_nat_gateway && var.availability_zone_3 != "") ? aws_nat_gateway.vpc-az3[0].id : null
   description = "The NAT Gateway Id of the NAT Gateway in AZ3."
 }
 output "inspection_tgw_attachment_id" {

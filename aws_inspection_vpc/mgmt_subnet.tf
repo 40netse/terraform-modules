@@ -79,7 +79,7 @@ resource "aws_route" "inspection-ns-management-default-route-az2" {
 #
 module "subnet-management-az3" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_subnet"
-  count                      = var.enable_dedicated_management_eni ? 1 : 0
+  count                      = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? 1 : 0
   subnet_name                = "${var.vpc_name}-management-az3-subnet"
 
   vpc_id                     = module.vpc.vpc_id
@@ -88,19 +88,19 @@ module "subnet-management-az3" {
 }
 module "management-route-table-az3" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
-  count   = var.enable_dedicated_management_eni ? 1 : 0
+  count   = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? 1 : 0
   rt_name = "${var.vpc_name}-management-rt-az3"
 
   vpc_id  = module.vpc.vpc_id
 }
 module "management-route-table-association-az3" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
-  count                      = var.enable_dedicated_management_eni ? 1 : 0
+  count                      = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? 1 : 0
   subnet_ids                 = module.subnet-management-az3[0].id
   route_table_id             = module.management-route-table-az3[0].id
 }
 resource "aws_route" "inspection-ns-management-default-route-az3" {
-  count                  = var.enable_dedicated_management_eni ? 1 : 0
+  count                  = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? 1 : 0
   route_table_id         = module.management-route-table-az3[0].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc-igw.igw_id
