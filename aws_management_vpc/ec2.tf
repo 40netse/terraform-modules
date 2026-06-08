@@ -135,7 +135,7 @@ data "aws_ami" "fortimanager" {
 
   filter {
     name   = "name"
-    values = ["FortiManager*VM64-AWS *(${var.fortimanager_os_version}) GA*"]
+    values = ["FortiManager*VM64-AWS *(${var.fortimanager_os_version}*) GA*"]
   }
 
   filter {
@@ -152,7 +152,7 @@ data "aws_ami" "fortianalyzer" {
 
   filter {
     name   = "name"
-    values = ["FortiAnalyzer*VM64-AWS *(${var.fortianalyzer_os_version}) GA*"]
+    values = ["FortiAnalyzer*VM64-AWS *(${var.fortianalyzer_os_version}*) GA*"]
   }
 
   filter {

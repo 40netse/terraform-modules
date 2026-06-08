@@ -88,7 +88,7 @@ variable "fortimanager_instance_type" {
   description = "Instance type for fortimanager"
 }
 variable "fortimanager_os_version" {
-  description = "Fortimanager OS Version for the AMI Search String"
+  description = "FortiManager OS version for AMI search. Use 'X.Y' (e.g. '7.6') to match the latest patch release, or 'X.Y.Z' (e.g. '7.6.7') to pin a specific version."
 }
 variable "fortimanager_host_ip" {
   description = "Fortimanager IP Address"
@@ -110,7 +110,7 @@ variable "fortianalyzer_instance_type" {
   description = "Instance type for fortianalyzer"
 }
 variable "fortianalyzer_os_version" {
-  description = "Fortianalyzer OS Version for the AMI Search String"
+  description = "FortiAnalyzer OS version for AMI search. Use 'X.Y' (e.g. '7.6') to match the latest patch release, or 'X.Y.Z' (e.g. '7.6.7') to pin a specific version."
 }
 variable "fortianalyzer_host_ip" {
   description = "Fortianalyzer IP Address"
