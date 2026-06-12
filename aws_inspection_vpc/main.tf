@@ -87,6 +87,7 @@ locals {
                                                                     2 * local.subnet_index_add_natgw_mgmt)
 }
 data "aws_ec2_transit_gateway" "tgw" {
+  count = var.enable_tgw_attachment ? 1 : 0
   filter {
     name   = "tag:Name"
     values = [var.named_tgw]
@@ -134,7 +135,7 @@ module "vpc-transit-gateway-attachment" {
   count                          = var.enable_tgw_attachment  ? 1 : 0
   tgw_attachment_name            = "${var.vpc_name}-tgw-attachment"
 
-  transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw[0].id
   subnet_ids                                      = var.availability_zone_3 != "" ? [ module.subnet-private-az1.id, module.subnet-private-az2.id, module.subnet-private-az3[0].id ] : [ module.subnet-private-az1.id, module.subnet-private-az2.id ]
   transit_gateway_default_route_table_propogation = "true"
   appliance_mode_support                          = "enable"
@@ -143,7 +144,7 @@ module "vpc-transit-gateway-attachment" {
 
 resource "aws_ec2_transit_gateway_route_table" "inspection" {
   count                           = var.enable_tgw_attachment ? 1 : 0
-  transit_gateway_id              = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id              = data.aws_ec2_transit_gateway.tgw[0].id
   tags = {
     Name = "${var.vpc_name}-VPC TGW Route Table"
   }
