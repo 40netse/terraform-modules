@@ -3,9 +3,7 @@ resource "aws_eip" "EIP" {
   count                 = var.enable_public_ips ? 1 : 0
   network_interface     = aws_instance.ec2.primary_network_interface_id
   depends_on            = [ aws_instance.ec2 ]
-  tags = {
-    Name            = "${var.aws_ec2_instance_name}-public-eip"
-  }
+  tags = merge({ Name = "${var.aws_ec2_instance_name}-public-eip" }, var.tags)
 }
 
 resource "aws_eip_association" "AEIP" {
@@ -20,9 +18,7 @@ resource "aws_eip" "HA_EIP" {
   count                 = var.enable_mgmt_public_ips ? 1 : 0
   network_interface     = aws_network_interface.ha_eni[count.index].id
   depends_on            = [ aws_network_interface.ha_eni ]
-  tags = {
-    Name            = "${var.aws_ec2_instance_name}-mgmt-eip"
-  }
+  tags = merge({ Name = "${var.aws_ec2_instance_name}-mgmt-eip" }, var.tags)
 }
 
 resource "aws_network_interface" "ha_eni" {
@@ -36,9 +32,7 @@ resource "aws_network_interface" "ha_eni" {
     instance                  = aws_instance.ec2.id
     device_index              = 3
   }
-  tags = {
-    Name = "${var.aws_ec2_instance_name}-ENI_mgmt"
-  }
+  tags = merge({ Name = "${var.aws_ec2_instance_name}-ENI_mgmt" }, var.tags)
 }
 
 resource "aws_network_interface" "private_eni" {
@@ -52,9 +46,7 @@ resource "aws_network_interface" "private_eni" {
     instance                  = aws_instance.ec2.id
     device_index              = 1
   }
-  tags = {
-    Name = "${var.aws_ec2_instance_name}-ENI_private"
-  }
+  tags = merge({ Name = "${var.aws_ec2_instance_name}-ENI_private" }, var.tags)
 }
 
 resource "aws_instance" "ec2" {
@@ -69,8 +61,6 @@ resource "aws_instance" "ec2" {
   private_ip                  = var.public_ip_address
   security_groups             = [ var.security_group_public_id ]
   secondary_private_ips       = var.secondary_private_ips
-  tags = {
-    Name            = var.aws_ec2_instance_name
-  }
+  tags = merge({ Name = var.aws_ec2_instance_name }, var.tags)
 }
 

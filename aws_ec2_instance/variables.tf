@@ -94,3 +94,8 @@ variable "iam_instance_profile_id" {
 variable "userdata_rendered" {
   description = "rendered userdata for configuration"
 }
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
+}
