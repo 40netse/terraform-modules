@@ -129,3 +129,8 @@ variable "linux_instance_type" {
 variable "linux_host_ip" {
   description = "Fortigate Host IP for all subnets"
 }
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
+}

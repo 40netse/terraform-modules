@@ -1,8 +1,6 @@
 
 resource "aws_ec2_transit_gateway" "tgw" {
-  tags = {
-    Name        = var.tgw_name
-  }
+  tags = merge({ Name = var.tgw_name }, var.tags)
   amazon_side_asn                 = var.bgp_asn
   auto_accept_shared_attachments  = var.auto_accept_shared_attachments
   default_route_table_association = var.default_route_table_association

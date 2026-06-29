@@ -17,6 +17,7 @@ module "subnet-management-private-az1" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_1
   subnet_cidr       = local.management_private_subnet_cidr_az1
+  tags              = var.tags
 }
 module "private-route-table-az1" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
@@ -24,6 +25,7 @@ module "private-route-table-az1" {
   rt_name = "${var.vpc_name}-private-rt-az1"
 
   vpc_id = module.vpc-management.vpc_id
+  tags   = var.tags
 }
 module "private-route-table-association-az1" {
   source         = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
@@ -43,6 +45,7 @@ module "subnet-management-private-az2" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_2
   subnet_cidr       = local.management_private_subnet_cidr_az2
+  tags              = var.tags
 }
 module "private-route-table-az2" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
@@ -50,6 +53,7 @@ module "private-route-table-az2" {
   rt_name = "${var.vpc_name}-private-rt-az2"
 
   vpc_id = module.vpc-management.vpc_id
+  tags   = var.tags
 }
 module "private-route-table-association-az2" {
   source         = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
@@ -69,6 +73,7 @@ module "subnet-management-private-az3" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_3
   subnet_cidr       = local.management_private_subnet_cidr_az3
+  tags              = var.tags
 }
 module "private-route-table-az3" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
@@ -76,6 +81,7 @@ module "private-route-table-az3" {
   rt_name = "${var.vpc_name}-private-rt-az3"
 
   vpc_id = module.vpc-management.vpc_id
+  tags   = var.tags
 }
 module "private-route-table-association-az3" {
   source         = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"

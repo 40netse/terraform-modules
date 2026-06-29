@@ -118,9 +118,7 @@ resource "aws_security_group" "fortimanager_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Name = "allow_fortimanager_required_ports"
-  }
+  tags = merge({ Name = "allow_fortimanager_required_ports" }, var.tags)
 }
 
 #
@@ -130,11 +128,13 @@ module "vpc-management" {
   source   = "git::https://github.com/40netse/terraform-modules.git//aws_vpc"
   vpc_name = "${var.vpc_name}-vpc"
   vpc_cidr = var.vpc_cidr
+  tags     = var.tags
 }
 module "vpc-igw-management" {
   source   = "git::https://github.com/40netse/terraform-modules.git//aws_igw"
   igw_name = "${var.vpc_name}-igw"
   vpc_id   = module.vpc-management.vpc_id
+  tags     = var.tags
 }
 module "vpc-transit-gateway-attachment-management" {
   source              = "git::https://github.com/40netse/terraform-modules.git//aws_tgw_attachment"
@@ -146,14 +146,13 @@ module "vpc-transit-gateway-attachment-management" {
   transit_gateway_default_route_table_propogation = "false"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc-management.vpc_id
+  tags                                            = var.tags
 }
 
 resource "aws_ec2_transit_gateway_route_table" "management" {
   count              = var.enable_tgw_attachment ? 1 : 0
   transit_gateway_id = data.aws_ec2_transit_gateway.tgw[0].id
-  tags = {
-    Name = "${var.cp}-${var.env}-management-tgw-rtb"
-  }
+  tags               = merge({ Name = "${var.cp}-${var.env}-management-tgw-rtb" }, var.tags)
 }
 resource "aws_ec2_transit_gateway_route_table_association" "east" {
   count                          = var.enable_tgw_attachment ? 1 : 0
@@ -170,6 +169,7 @@ module "subnet-management-public-az1" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_1
   subnet_cidr       = local.management_public_subnet_cidr_az1
+  tags              = var.tags
 }
 
 #
@@ -182,6 +182,7 @@ module "subnet-management-public-az2" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_2
   subnet_cidr       = local.management_public_subnet_cidr_az2
+  tags              = var.tags
 }
 
 #
@@ -195,6 +196,7 @@ module "subnet-management-public-az3" {
   vpc_id            = module.vpc-management.vpc_id
   availability_zone = var.availability_zone_3
   subnet_cidr       = local.management_public_subnet_cidr_az3
+  tags              = var.tags
 }
 
 #
@@ -202,9 +204,7 @@ module "subnet-management-public-az3" {
 #
 resource "aws_default_route_table" "route_management" {
   default_route_table_id = module.vpc-management.vpc_main_route_table_id
-  tags = {
-    Name = "${var.cp}-${var.env}-management-main-route-table"
-  }
+  tags                   = merge({ Name = "${var.cp}-${var.env}-management-main-route-table" }, var.tags)
 }
 resource "aws_security_group" "management-vpc-sg" {
   description = "Security Group for ENI in the management VPC"

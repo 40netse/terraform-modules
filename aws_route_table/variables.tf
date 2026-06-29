@@ -34,3 +34,9 @@ variable "tgw_id" {
   description = "Transit Gateway to use for the TGW Route"
   default     = null
 }
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
+}

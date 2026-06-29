@@ -14,6 +14,7 @@ module "subnet-natgw-az1" {
   vpc_id                     = module.vpc.vpc_id
   availability_zone          = var.availability_zone_1
   subnet_cidr                = local.natgw_subnet_cidr_az1
+  tags                       = var.tags
 }
 module "natgw-route-table-az1" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
@@ -21,6 +22,7 @@ module "natgw-route-table-az1" {
   rt_name = "${var.vpc_name}-natgw-rt-az1"
 
   vpc_id  = module.vpc.vpc_id
+  tags    = var.tags
 }
 module "natgw-route-table-association-az1" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
@@ -35,9 +37,7 @@ resource "aws_nat_gateway" "vpc-az1" {
   count             = var.create_nat_gateway && var.enable_nat_gateway ? 1 : 0
   allocation_id     = aws_eip.nat-gateway-az1[0].id
   subnet_id         = module.subnet-natgw-az1[0].id
-  tags = {
-    Name = "${var.vpc_name}-nat-gw-az1"
-  }
+  tags = merge({ Name = "${var.vpc_name}-nat-gw-az1" }, var.tags)
 }
 
 
@@ -52,6 +52,7 @@ module "subnet-natgw-az2" {
   vpc_id                     = module.vpc.vpc_id
   availability_zone          = var.availability_zone_2
   subnet_cidr                = local.natgw_subnet_cidr_az2
+  tags                       = var.tags
 }
 module "natgw-route-table-az2" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
@@ -59,6 +60,7 @@ module "natgw-route-table-az2" {
   rt_name = "${var.vpc_name}-natgw-rt-az2"
 
   vpc_id  = module.vpc.vpc_id
+  tags    = var.tags
 }
 module "natgw-route-table-association-az2" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
@@ -73,9 +75,7 @@ resource "aws_nat_gateway" "vpc-az2" {
   count             = var.create_nat_gateway && var.enable_nat_gateway ? 1 : 0
   allocation_id     = aws_eip.nat-gateway-az2[0].id
   subnet_id         = module.subnet-natgw-az2[0].id
-  tags = {
-    Name = "${var.vpc_name}-nat-gw-az2"
-  }
+  tags = merge({ Name = "${var.vpc_name}-nat-gw-az2" }, var.tags)
 }
 #
 # Routes for the route table. If nat gateway is enabled, make the default route go to the nat gateway.
@@ -108,6 +108,7 @@ module "subnet-natgw-az3" {
   vpc_id                     = module.vpc.vpc_id
   availability_zone          = var.availability_zone_3
   subnet_cidr                = local.natgw_subnet_cidr_az3
+  tags                       = var.tags
 }
 module "natgw-route-table-az3" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
@@ -115,6 +116,7 @@ module "natgw-route-table-az3" {
   rt_name = "${var.vpc_name}-natgw-rt-az3"
 
   vpc_id  = module.vpc.vpc_id
+  tags    = var.tags
 }
 module "natgw-route-table-association-az3" {
   source                     = "git::https://github.com/40netse/terraform-modules.git//aws_route_table_association"
@@ -129,9 +131,7 @@ resource "aws_nat_gateway" "vpc-az3" {
   count             = (var.create_nat_gateway && var.enable_nat_gateway && var.availability_zone_3 != "") ? 1 : 0
   allocation_id     = aws_eip.nat-gateway-az3[0].id
   subnet_id         = module.subnet-natgw-az3[0].id
-  tags = {
-    Name = "${var.vpc_name}-nat-gw-az3"
-  }
+  tags = merge({ Name = "${var.vpc_name}-nat-gw-az3" }, var.tags)
 }
 resource "aws_route" "inspection-ns-natgw-default-route-az3" {
   depends_on             = [aws_nat_gateway.vpc-az3]

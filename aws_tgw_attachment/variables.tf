@@ -26,3 +26,9 @@ variable "appliance_mode_support" {
   description = "Turn on appliance mode support for this attachment"
   default = "disable"
 }
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
+}

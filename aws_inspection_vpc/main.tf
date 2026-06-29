@@ -101,26 +101,27 @@ module "vpc" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_vpc"
   vpc_name                   = "${var.vpc_name}-vpc"
   vpc_cidr                   = var.vpc_cidr
+  tags                       = var.tags
 }
 #
 # Default route table that is created with the main VPC.
 #
 resource "aws_default_route_table" "route_inspection" {
   default_route_table_id = module.vpc.vpc_main_route_table_id
-  tags = {
-    Name = "default table for ${var.vpc_name} (unused)"
-  }
+  tags = merge({ Name = "default table for ${var.vpc_name} (unused)" }, var.tags)
 }
 module "vpc-igw" {
   source = "git::https://github.com/40netse/terraform-modules.git//aws_igw"
   igw_name                   = "${var.vpc_name}-igw"
   vpc_id                     = module.vpc.vpc_id
+  tags                       = var.tags
 }
 module "igw-route-table" {
   source  = "git::https://github.com/40netse/terraform-modules.git//aws_route_table"
   rt_name = "${var.vpc_name}-igw-rt"
 
   vpc_id  = module.vpc.vpc_id
+  tags    = var.tags
 }
 resource "aws_route_table_association" "b" {
   gateway_id     = module.vpc-igw.igw_id
@@ -140,14 +141,13 @@ module "vpc-transit-gateway-attachment" {
   transit_gateway_default_route_table_propogation = "true"
   appliance_mode_support                          = "enable"
   vpc_id                                          = module.vpc.vpc_id
+  tags                                            = var.tags
 }
 
 resource "aws_ec2_transit_gateway_route_table" "inspection" {
   count                           = var.enable_tgw_attachment ? 1 : 0
   transit_gateway_id              = data.aws_ec2_transit_gateway.tgw[0].id
-  tags = {
-    Name = "${var.vpc_name}-VPC TGW Route Table"
-  }
+  tags = merge({ Name = "${var.vpc_name}-VPC TGW Route Table" }, var.tags)
 }
 
 resource "aws_ec2_transit_gateway_route_table_association" "inspection" {

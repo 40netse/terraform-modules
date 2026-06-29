@@ -125,6 +125,7 @@ module "inspection_instance_jump_box" {
   iam_instance_profile_id  = module.linux_iam_profile[0].id
   userdata_rendered        = var.linux_user_data
   public_src_dst_check     = var.enable_source_dest_check
+  tags                     = var.tags
 
   depends_on = [time_sleep.wait_for_networking]
 }
@@ -183,6 +184,7 @@ module "fortimanager" {
   security_group_public_id = aws_security_group.fortimanager_sg[0].id
   userdata_rendered        = var.enable_fortimanager ? var.fortimanager_user_data : ""
   iam_instance_profile_id  = module.iam_profile[0].id
+  tags                     = var.tags
 }
 
 resource "aws_security_group" "fortianalyzer_sg" {
@@ -238,9 +240,7 @@ resource "aws_security_group" "fortianalyzer_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Name = "Allow FAZ required ports"
-  }
+  tags = merge({ Name = "Allow FAZ required ports" }, var.tags)
 }
 
 module "fortianalyzer" {
@@ -257,4 +257,5 @@ module "fortianalyzer" {
   security_group_public_id = aws_security_group.fortianalyzer_sg[0].id
   userdata_rendered        = var.enable_fortianalyzer ? var.fortianalyzer_user_data : ""
   iam_instance_profile_id  = module.iam_profile[0].id
+  tags                     = var.tags
 }

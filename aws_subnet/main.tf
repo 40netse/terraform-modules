@@ -4,9 +4,7 @@ resource "aws_subnet" "subnet" {
   cidr_block        = var.subnet_cidr
   availability_zone = var.availability_zone
 
-  tags= {
-    Name        = var.subnet_name
-  }
+  tags = merge({ Name = var.subnet_name }, var.tags)
 }
 
 resource "aws_route_table_association" "rta" {

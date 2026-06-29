@@ -1,8 +1,6 @@
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-attach" {
-  tags = {
-    Name        = var.tgw_attachment_name
-  }
+  tags = merge({ Name = var.tgw_attachment_name }, var.tags)
   transit_gateway_id                              = var.transit_gateway_id
   vpc_id                                          = var.vpc_id
   subnet_ids                                      = var.subnet_ids
