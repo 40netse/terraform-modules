@@ -41,6 +41,11 @@ variable "log_source_cidr_sg" {
   default     = []
   type        = list(string)
 }
+variable "jump_box_nat_source_cidr_sg" {
+  description = "List of spoke VPC CIDRs (e.g. vpc_cidr_east, vpc_cidr_west) allowed to reach the jump box on 443 for NAT passthrough -- the jump box's userdata MASQUERADEs/forwards spoke instance traffic so cloud-init can reach apt repos before the FortiGate/GWLB path exists. This is a distinct traffic class from vpc_cidr_sg (admin access to the box itself) -- no fallback to vpc_cidr_sg, since admin CIDRs are not the spoke CIDRs. Leave empty (default) to skip creating the rule entirely, e.g. when enable_jump_box's NAT function isn't in use."
+  default     = []
+  type        = list(string)
+}
 variable "subnet_bits" {
   description = "Number of bits to use for each subnet"
   type        = number

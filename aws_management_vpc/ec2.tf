@@ -38,46 +38,54 @@ data "aws_ami" "ubuntu" {
 #
 
 #
-# Security Groups are VPC specific, so an "ALLOW ALL" for each VPC
+# Two distinct traffic classes on this box: admin access to the box itself (vpc_cidr_sg), and
+# NAT passthrough for spoke instance cloud-init (jump_box_nat_source_cidr_sg) -- the userdata
+# MASQUERADEs/forwards spoke traffic so spoke instances can reach apt repos before the
+# FortiGate/GWLB path exists. Dropped the UDP 514 (syslog) rule entirely -- no justification
+# found for a jump box needing inbound syslog, looked like the same copy-paste-from-elsewhere
+# pattern as the stray 8900 rule that was on the FortiAnalyzer SG.
 #
 resource "aws_security_group" "ec2-linux-jump-box-sg" {
   count       = var.enable_jump_box ? 1 : 0
   description = "Security Group for Linux Jump Box"
   vpc_id      = module.vpc-management.vpc_id
   ingress {
-    description = "Allow SSH from Anywhere IPv4 (change this to My IP)"
+    description = "Allow SSH admin access"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    description = "Allow HTTP admin access (apache2 status page)"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow HTTPs from Anywhere IPv4 (change this to My IP)"
+    description = "Allow HTTPS admin access"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow ICMP from connected CIDRs"
+    description = "Allow ICMP from admin CIDRs"
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = var.vpc_cidr_sg
   }
-  ingress {
-    description = "Allow Syslog from anywhere IPv4"
-    from_port   = 514
-    to_port     = 514
-    protocol    = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "ingress" {
+    for_each = length(var.jump_box_nat_source_cidr_sg) > 0 ? [1] : []
+    content {
+      description = "Allow HTTPS from spoke VPCs for NAT passthrough (cloud-init apt access)"
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = var.jump_box_nat_source_cidr_sg
+    }
   }
   egress {
     description = "Allow egress ALL"
