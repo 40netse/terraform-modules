@@ -187,52 +187,55 @@ module "fortimanager" {
   tags                     = var.tags
 }
 
+locals {
+  # Falls back to vpc_cidr_sg (not 0.0.0.0/0) if the caller doesn't set log_source_cidr_sg.
+  log_cidrs = length(var.log_source_cidr_sg) > 0 ? var.log_source_cidr_sg : var.vpc_cidr_sg
+}
+
+#
+# Scoped to the actual ports this template's topology needs. Dropped 8900 (web filter/AV
+# query) entirely -- it's not on FortiAnalyzer's own required-ports list at all (that's a
+# FortiManager port), looks copy-pasted from the FMG security group by mistake.
+#
 resource "aws_security_group" "fortianalyzer_sg" {
   count       = var.enable_fortianalyzer ? 1 : 0
   name        = "allow_faz_required_ports"
   description = "Fortianalyzer Allow Required Ports"
   vpc_id      = module.vpc-management.vpc_id
   ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    description = "Allow HTTPS admin/GUI access"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow ICMP from connected CIDRs"
+    description = "Allow ICMP from admin CIDRs"
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    description = "Allow SSH admin/CLI access"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow Web Filter"
-    from_port   = 8900
-    to_port     = 8900
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Log Fetch TCP"
+    description = "Allow OFTP log forwarding (TCP) from FortiGate/FortiManager log sources"
     from_port   = 514
     to_port     = 514
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = local.log_cidrs
   }
   ingress {
-    description = "Log Fetch UDP"
+    description = "Allow syslog (UDP) from FortiGate/FortiManager log sources"
     from_port   = 514
     to_port     = 514
     protocol    = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = local.log_cidrs
   }
   egress {
     from_port   = 0

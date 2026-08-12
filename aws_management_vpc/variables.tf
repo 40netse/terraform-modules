@@ -31,6 +31,16 @@ variable "vpc_cidr_sg" {
   default     = []
   type        = list(string)
 }
+variable "fgfm_source_cidr_sg" {
+  description = "List of CIDRs allowed to reach FortiManager's FGFM port (541) -- the CIDRs where the managed FortiGates actually live (e.g. the Inspection VPC, and any spoke VPCs with FortiGates registered to this FortiManager). Not the same as vpc_cidr_sg, which is for admin/GUI/SSH access. Defaults to vpc_cidr_sg for backward compatibility if not set."
+  default     = []
+  type        = list(string)
+}
+variable "log_source_cidr_sg" {
+  description = "List of CIDRs allowed to send logs to FortiAnalyzer (OFTP TCP/514, syslog UDP/514) -- typically the Inspection VPC (FortiGate log sources) and the Management VPC itself (FortiManager forwards logs to FortiAnalyzer too). Defaults to vpc_cidr_sg for backward compatibility if not set."
+  default     = []
+  type        = list(string)
+}
 variable "subnet_bits" {
   description = "Number of bits to use for each subnet"
   type        = number
