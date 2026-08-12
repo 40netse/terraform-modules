@@ -48,8 +48,18 @@ data "aws_ec2_transit_gateway" "tgw" {
   }
 }
 
+locals {
+  # Falls back to vpc_cidr_sg (not 0.0.0.0/0) if the caller doesn't set fgfm_source_cidr_sg,
+  # so existing callers who haven't been updated yet don't silently end up wide open.
+  fgfm_cidrs = length(var.fgfm_source_cidr_sg) > 0 ? var.fgfm_source_cidr_sg : var.vpc_cidr_sg
+}
+
 #
-# This is an "allow all" security group, but a place holder for a more strict SG
+# Scoped to the actual ports this template's topology needs: admin/GUI/SSH from vpc_cidr_sg,
+# FGFM from fgfm_cidrs (the FortiGates' own CIDRs, not the whole internet). Dropped 8900
+# (AV/GeoIP query), 8902-8903 (AV query/GeoIP), 8891 (FortiClient AV cascade), and 5199 (HA
+# clustering) entirely -- none of these are used by this topology (no FortiClient EMS
+# integration, no FortiManager HA pair), so there's nothing to scope, just remove.
 #
 resource "aws_security_group" "fortimanager_sg" {
   count       = var.enable_fortimanager ? 1 : 0
@@ -57,60 +67,32 @@ resource "aws_security_group" "fortimanager_sg" {
   vpc_id      = module.vpc-management.vpc_id
   description = "Fortimanager Allow required ports from public Subnets"
   ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    description = "Allow HTTPS admin/GUI access"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow HTTP from Anywhere IPv4 (change this to My IP)"
+    description = "Allow SSH admin/CLI access"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow Web Filter"
-    from_port   = 8900
-    to_port     = 8900
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow ICMP"
+    description = "Allow ICMP from admin CIDRs"
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.vpc_cidr_sg
   }
   ingress {
-    description = "Allow FGFM protocol"
+    description = "Allow FGFM protocol from managed FortiGates only"
     from_port   = 541
     to_port     = 541
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow AV Query and GEO IP Service"
-    from_port   = 8902
-    to_port     = 8903
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow Cascade Mode"
-    from_port   = 8891
-    to_port     = 8891
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow HA Protocol"
-    from_port   = 5199
-    to_port     = 5199
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = local.fgfm_cidrs
   }
   egress {
     from_port   = 0
