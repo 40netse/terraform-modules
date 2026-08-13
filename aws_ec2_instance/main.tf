@@ -59,7 +59,7 @@ resource "aws_instance" "ec2" {
   user_data_base64            = var.userdata_rendered != "" ? base64encode(var.userdata_rendered) : null
   iam_instance_profile        = var.iam_instance_profile_id
   private_ip                  = var.public_ip_address
-  security_groups             = [ var.security_group_public_id ]
+  vpc_security_group_ids      = [ var.security_group_public_id ]
   secondary_private_ips       = var.secondary_private_ips
   tags = merge({ Name = var.aws_ec2_instance_name }, var.tags)
 }
