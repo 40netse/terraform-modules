@@ -61,21 +61,47 @@ module "management-route-table-association-az2" {
 }
 
 #
-# Routes for the route table. If enable_dedicated_management_eni is enabled, make the default route go to the IGW.
-# If not, these subnets and route tables will not be created.
+# Routes for the route table. If enable_dedicated_management_eni is enabled:
+#   - If enable_dedicated_management_public_ip is true, default route goes to the IGW
+#     (management traffic stays on its own path, separate from data-plane NAT'd egress).
+#   - If false, default route goes to the NAT Gateway instead -- otherwise there's no
+#     egress path at all for that interface, and FortiGuard updates/license verification
+#     silently fail. Falls back to the IGW if a NAT Gateway isn't actually available
+#     (enable_nat_gateway/create_nat_gateway not both true), same as before this variable
+#     existed, rather than leaving the interface with no default route at all.
+# If enable_dedicated_management_eni is not enabled, these subnets and route tables will
+# not be created.
 #
+locals {
+  management_route_via_natgw = var.enable_dedicated_management_eni && !var.enable_dedicated_management_public_ip && var.enable_nat_gateway && var.create_nat_gateway
+  management_route_via_igw   = var.enable_dedicated_management_eni && !local.management_route_via_natgw
+}
 
-resource "aws_route" "inspection-ns-management-default-route-az1" {
-  count                  = var.enable_dedicated_management_eni ? 1 : 0
+resource "aws_route" "inspection-ns-management-default-route-igw-az1" {
+  count                  = local.management_route_via_igw ? 1 : 0
   route_table_id         = module.management-route-table-az1[0].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc-igw.igw_id
 }
-resource "aws_route" "inspection-ns-management-default-route-az2" {
-  count                  = var.enable_dedicated_management_eni ? 1 : 0
+resource "aws_route" "inspection-ns-management-default-route-natgw-az1" {
+  depends_on             = [aws_nat_gateway.vpc-az1]
+  count                  = local.management_route_via_natgw ? 1 : 0
+  route_table_id         = module.management-route-table-az1[0].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.vpc-az1[0].id
+}
+resource "aws_route" "inspection-ns-management-default-route-igw-az2" {
+  count                  = local.management_route_via_igw ? 1 : 0
   route_table_id         = module.management-route-table-az2[0].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc-igw.igw_id
+}
+resource "aws_route" "inspection-ns-management-default-route-natgw-az2" {
+  depends_on             = [aws_nat_gateway.vpc-az2]
+  count                  = local.management_route_via_natgw ? 1 : 0
+  route_table_id         = module.management-route-table-az2[0].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.vpc-az2[0].id
 }
 
 #
@@ -105,9 +131,16 @@ module "management-route-table-association-az3" {
   subnet_ids                 = module.subnet-management-az3[0].id
   route_table_id             = module.management-route-table-az3[0].id
 }
-resource "aws_route" "inspection-ns-management-default-route-az3" {
-  count                  = (var.enable_dedicated_management_eni && var.availability_zone_3 != "") ? 1 : 0
+resource "aws_route" "inspection-ns-management-default-route-igw-az3" {
+  count                  = (local.management_route_via_igw && var.availability_zone_3 != "") ? 1 : 0
   route_table_id         = module.management-route-table-az3[0].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.vpc-igw.igw_id
+}
+resource "aws_route" "inspection-ns-management-default-route-natgw-az3" {
+  depends_on             = [aws_nat_gateway.vpc-az3]
+  count                  = (local.management_route_via_natgw && var.availability_zone_3 != "") ? 1 : 0
+  route_table_id         = module.management-route-table-az3[0].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.vpc-az3[0].id
 }

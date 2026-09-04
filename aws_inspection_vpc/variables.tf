@@ -41,6 +41,11 @@ variable "enable_dedicated_management_eni" {
   description = "Boolean to allow creation of dedicated management subnets and ENI in the inspection VPC"
   type        = bool
 }
+variable "enable_dedicated_management_public_ip" {
+  description = "Whether the dedicated management ENI (enable_dedicated_management_eni) will get a public IP. When true, its subnets' default route goes to the IGW (management traffic stays on its own path, separate from data-plane NAT'd egress). When false, there's no other way for that interface to reach the internet, so the default route goes to the NAT Gateway instead (falls back to the IGW if enable_nat_gateway/create_nat_gateway aren't both true, since there's no NAT Gateway to route to) -- otherwise FortiGuard updates and license verification silently fail."
+  type        = bool
+  default     = true
+}
 variable "create_gwlb_route_associations" {
   description = "Boolean to conditionally create the gwlb route table associations"
   type        = bool
